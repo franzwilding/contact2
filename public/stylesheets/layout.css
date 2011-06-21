@@ -1,0 +1,24 @@
+
+
+
+
+
+/*****************/
+/* GLOBAL STYLES */
+/*****************/
+
+body {
+	position: relative;
+	}
+
+#mainarea {
+	position: absolute;
+	top: 0;
+	right:20px;
+	bottom: auto;
+	left:20px;
+	}
+
+#inner {
+	min-height: 200px;
+	}

@@ -8,7 +8,42 @@
 </head>
 <body>
 
-<%= yield %>
+<!-- MAINAREA -->
+<div id="mainarea">
+
+	
+	<!-- CONTENT -->
+	<div id="content">
+		
+		<!-- HEADER -->
+		<div id="header">
+			
+			<ul id="menu">
+				<li class="active"><span><a href="" style="background-image:url(/stylesheets/icons/16_people.png);">Personen</a></span></li>
+				<li><span><a href="" style="background-image:url(/stylesheets/icons/16_events.png);">Events</a></span></li>
+				<li><span><a href="" style="background-image:url(/stylesheets/icons/16_interactions.png);">Interactions</a></span></li>
+				<li><span><a href="" style="background-image:url(/stylesheets/icons/16_lists.png);">Listen</a></span></li>
+				<li><span><a href="" style="background-image:url(/stylesheets/icons/16_settings.png);">Einstellungen</a></span></li>
+			</ul><!-- menu ends here -->
+			
+		</div><!-- header ends here -->
+		
+		<!-- INNER -->
+		<div id="inner">
+		<%= yield %>
+		</div><!-- inner ends here -->
+		
+		<div id="content_footer"></div>
+	</div><!-- content ends here -->
+	
+	
+	<!-- FOOTER -->
+	<div id="footer">
+		<strong>Contact 2.0</strong>
+	</div><!-- footer ends here -->
+	
+	
+</div><!-- mainarea ends here -->
 
 </body>
 </html>
