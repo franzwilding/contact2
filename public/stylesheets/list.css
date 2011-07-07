@@ -1,0 +1,130 @@
+
+
+
+
+
+/*****************/
+/* GLOBAL STYLES */
+/*****************/
+
+ul.list, ol.list {
+	list-style: none;
+	width: 100%;
+	margin-bottom: 10px;
+	float: left;
+	border-bottom: 1px solid white;
+	}
+
+ul.list li, ol.list li {
+	width: 98%;
+	float: left;
+	border-bottom: 1px solid #ccc;
+	border-top: 1px solid white;
+	padding: 5px 1%;
+	position: relative;
+	}
+
+ul.list li:first-child, ol.list li:first-child {
+	border-top: none;
+	}
+
+ul.list img, ol.list img {
+	width: 30px;
+	height: 30px;
+	border: 1px solid white;
+	box-shadow: 0 0 1px #333333;
+	float: left;
+	margin-right: 10px;
+	}
+
+ul.list p, ol.list p {
+	float: left;
+	margin-top: 5px;
+	}
+	
+ul.list h3, ol.list h3 {
+	float: left;
+	color: #333333;
+	text-shadow: 1px 1px white;
+	font-size: 24px;
+	}
+
+ul.list span.phone, ol.list span.phone, ul.list a.email, ol.list a.email {
+	background: #DFDFDF url(img/phone_bg.png) repeat-x left top;
+	border: 1px solid white;
+	border-radius: 3px;
+	color: #666666;
+	font-size: 13px;
+	display: block;
+	float: left;
+	padding:1px 6px;
+	margin-left: 10px;
+	box-shadow: 0 0 2px #999;
+	text-decoration: none;
+	}
+
+ul.list a.email, ol.list a.email {
+	background: #2381B6 url(img/email_bg.png) repeat-x left top;
+	color: white;
+	}	
+
+ul.list a.edit, ol.list a.edit {
+	position: absolute;
+	right:10px;
+	top:10px;
+	display: block;
+	background: url(icons/sw_settings.png) no-repeat left top;
+	width: 17px;
+	text-indent: -99999999px;
+	cursor: pointer;
+	height: 17px;
+	opacity: 0.6;
+	}
+
+ul.list ul, ol.list ul, ul.list ol, ol.list ol {
+	float: left;
+	list-style: none;
+	background: none;
+	}
+
+ul.list ul li, ol.list ul li, ul.list ol li, ol.list ol li {
+	border: none;
+	}
+
+ul.list ul.meta, ol.list ul.meta {
+	width: 200px;
+	margin-left: 10px;
+	margin-top: 2px;
+	}
+
+ul.list ul.meta li, ol.list ul.meta li {
+	width: auto;
+	}
+
+ul.list ul.meta li a, ol.list ul.meta li a {
+	display: block;
+	float: left;
+	width: 16px;
+	height: 16px;
+	text-indent: -999999px;
+	}
+
+ul.meta li.facebook a { background: url(icons/16_facebook.png) no-repeat left top; }
+ul.meta li.twitter a { background: url(icons/16_twitter.png) no-repeat left top; }
+ul.meta li.website a { background: url(icons/16_wordpress.png) no-repeat left top; }
+	
+ul.list a.edit:hover, ol.list a.edit:hover {
+	background-position: left 100%;
+	opacity: 1;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

@@ -1,7 +1,13 @@
 Contact2::Application.routes.draw do
 
+resources :lists
+resources :interactions
+resources :events
+resources :people
+
 match ':controller(/:action(/:id(.:format)))'
 
+root :to => "people#index"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

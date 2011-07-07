@@ -1,0 +1,81 @@
+<h1 class="h">Listing people</h1>
+
+<form class="search">
+	<fieldset>
+		<legend>Suchen</legend>
+		
+		<input class="search" type="text" value="Suchbegriff eingeben" />
+		<button>Suchen</button>
+		<br />
+		<ul>
+			<li class="title">Sortieren nach: </li>
+			<li>
+				<select>
+					<option>Sortieren nach</option>
+					<option>Wien</option>
+					<option>Steiermark</option>
+					<option>Tirol</option>
+					<option>Vorarlberg</option>
+				</select>
+			</li>
+			<!--li><input type="checkbox" /> <label>Aktis</label></li-->
+		</ul>
+		
+		<ul>
+			<li class="title">Beschränken auf: </li>
+		</ul>
+		
+	</fieldset>
+</form><!-- form.search ends here -->
+
+<hr />
+
+<a href="<%= new_person_path %>" class="button add">Neue Person hinzufügen</a>
+
+<ul class="list">
+	<li class="loading">
+		<p class="loading">Laden...</p>
+	</li>
+</ul>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		
+		$.get("<%= raw url_for(:controller => 'people', :format => 'json', :limit => 2, :offset => 0) %>", function(data){			
+			
+			html_string = '';
+			
+			$.each(data, function(index, value) {
+				
+				current_person = value["person"];
+				
+				html_string += '<li>';
+				html_string += '	<h3>' + current_person.firstname + ' ' + current_person.surname + '</h3><p>';
+				
+				if(current_person.phone) html_string += '	<span class="phone">' + current_person.phone + '</span>';
+				if(current_person.email) html_string += '	<a href="" class="email">' + current_person.email + '</a>';
+				
+				html_string += '	</p><ul class="meta">';
+				
+				if(current_person.facebook) html_string += '	<li class="facebook"><a href="http://facebook.com/' + current_person.facebook + '" target="_blank" title="Zum Facebook-Account dieses Users (in einem neuen Tab)">Facebook</a></li>';
+				if(current_person.twitter) html_string += '	<li class="twitter"><a href="http://twitter.com/' + current_person.twitter + '" target="_blank" title="Zum Twitter-Account dieses Users (in einem neuen Tab)">Twitter</a></li>';
+				if(current_person.website) html_string += '	<li class="website"><a href="http://' + current_person.website + '" target="_blank" title="Zur Website dieses Users (in einem neuen Tab)">Website</a></li>';
+				html_string += '</ul><a class="edit" title="Diesen Eintrag bearbeiten" href="people/' + current_person.id + '/edit">Bearbeiten</a></li>';
+			});
+			
+			$("ul.list").html(html_string);
+			
+		});		
+	});
+</script>
+
+<div class="export">
+	<a href="#" class="tooltip">Diese Suche verwenden</a>
+	<div class="h">
+		<ul class="tooltip_menu">
+			<li><a href="">Diese Auswahl als Liste speichern</a></li>
+			<li><a href="">Diese Auswahl als Excel-Datei herunterladen</a></li>
+			<li><a href="">Diese Auswahl als CSV-Datei herunterladen</a></li>
+		</ul>
+	</div>
+</div>

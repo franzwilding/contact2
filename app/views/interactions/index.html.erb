@@ -1,0 +1,27 @@
+<h1>Listing interactions</h1>
+
+<table>
+  <tr>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Happend at</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @interactions.each do |interaction| %>
+  <tr>
+    <td><%= interaction.title %></td>
+    <td><%= interaction.description %></td>
+    <td><%= interaction.happend_at %></td>
+    <td><%= link_to 'Show', interaction %></td>
+    <td><%= link_to 'Edit', edit_interaction_path(interaction) %></td>
+    <td><%= link_to 'Destroy', interaction, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Interaction', new_interaction_path %>

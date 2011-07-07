@@ -3,6 +3,168 @@
 
 
 
+/******************/
+/* GENERAL STYLES */
+/******************/
+
+.c {
+	height: 0;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	clear: both;
+	}
+
+.h {
+	display: none;
+	}
+
+form {
+	}
+
+fieldset {
+	border: none;
+	border-right:1px solid white;
+	border-bottom: 1px solid white;
+	background: url(img/op_black_10.png) left top;
+	border-radius: 5px;
+	float: left;
+	margin: 20px;
+	padding-bottom: 20px;
+	}
+
+legend {
+	color: #1A87BB;
+	text-align: center;
+	width: 100%;
+	text-shadow: 1px 1px white;
+	display: block;
+	text-transform: uppercase;
+	font-size: 15px;
+	}
+
+label {
+	color: #666666;
+	text-shadow: 1px 1px white;
+	font-size: 20px;
+	display: block;
+	font-weight: 200;
+	width: 300px;
+	margin: 10px 20px 5px;
+	}
+
+input {
+	background: white url(img/input_bg.gif) repeat-x left top;
+	border: 1px solid #CCCCCC;
+	padding: 4px;
+	height: 14px;
+	margin: 0 20px;
+	display: block;
+	width: 300px;
+	color: #666666;
+	}
+
+textarea {
+	width: 300px;
+	float: left;
+	color: #666666;
+	background: white url(img/input_bg.gif) repeat-x left top;
+	border: 1px solid #CCCCCC;
+	padding: 4px;
+	resize: vertical;
+	}
+
+input[type="checkbox"] {
+	width: auto;
+	margin-left: 0;
+	margin-right: 0;
+	}
+
+input[type="submit"] {
+	background: url(img/button_bg.png) no-repeat left top;
+	width: 131px;
+	height: 31px;
+	color: white;
+	text-shadow: -1px -1px #125A80;
+	font-weight: normal;
+	font-size: 15px;
+	text-align: center;
+	border: none;
+	cursor: pointer;
+	margin: 0 auto 20px auto;
+	}
+
+button {
+	float: left;
+	display: block;
+	border: none;
+	cursor: pointer;
+	}
+
+hr {
+	border: none;
+	background: url(img/hr.png) repeat-x;
+	height: 35px;
+	display: block;
+	clear: both;
+	}
+
+.export {
+	margin: 5px 0 8px 8px;
+	float: left;
+	}
+	
+.export a {
+	display: block;
+	background: url(img/export_button.png) no-repeat left top;
+	padding-top: 6px;
+	height: 25px;
+	padding-left: 35px;
+	color: #999999;
+	text-shadow: 1px 1px white;
+	text-decoration: none;
+	}
+
+ul.tooltip_menu {
+	font-size: 13px;
+	list-style: none;
+	}
+
+ul.tooltip_menu li {
+	padding-bottom: 3px;
+	padding-top: 3px;
+	border-bottom: 1px dashed #666;
+	}
+
+ul.tooltip_menu li:last-child {
+	border-bottom: none;
+	}
+
+ul.tooltip_menu a {
+	color: #ccc;
+	text-decoration: none;
+	}
+
+ul.tooltip_menu a:hover {
+	color: white;
+	text-decoration: underline;
+	}
+	
+
+p.metanav {
+	position: absolute;
+	right:20px;
+	top:20px;
+	}	
+
+h1 {
+	font-size: 30px;
+	color: #1A87BB;
+	font-weight: 200;
+	text-shadow: 1px 1px white;
+	margin: 20px 20px 10px;
+	}
+
 /*****************/
 /* GLOBAL STYLES */
 /*****************/
@@ -12,6 +174,7 @@ body {
 	font-family: "Helvetica Neue", Helvetica, Geneva, Arial;
 	min-width: 1000px;
 	overflow-x: auto;
+	font-size: 14px;
 	}
 
 #header {
@@ -77,20 +240,64 @@ body {
 	box-shadow: 0 0 8px #191919;
 	}
 
-#inner {
-	background: url(img/content_grad.png) repeat-x left top;
+#usermenu {
+	position: absolute;
+	right:5px;
+	top:5px;
+	text-align: right;
+	color: #333333;
+	text-shadow: 1px 1px white;
+	font-size: 12px;
+	padding-right: 30px;
 	}
 
-#content_footer {
+#user_settings {
 	position: absolute;
-	height: 33px;
-	background: url(img/content_footer.png) repeat-x left top;
-	left:0;
-	bottom: 0;
-	right:0;
-	top:auto;
-	border-bottom-right-radius: 8px;
-	border-bottom-left-radius: 8px;
+	right:4px;
+	top:8px;
+	background: url(icons/sw_settings.png) no-repeat left top;
+	width: 17px;
+	height: 17px;
+	display: block;
+	font-size: 0px;
+	}
+
+#user_settings:hover {
+	background-position: left 100%;
+	}
+
+#usermenu a {
+	color: black;
+	text-decoration: none;
+	}
+
+#usermenu a:hover {
+	color: #1A87BB;
+	}
+
+#usermenu img {
+	float: right;
+	width: 23px;
+	height: 23px;
+	box-shadow: 0 0 1px #333;
+	border:1px solid white;
+	margin: 4px 0 0 6px;
+	}
+
+#inner {
+	background: url(img/content_grad.png) repeat-x left top;
+	float: left;
+	width: 100%;
+	position: relative;
+	}
+
+a {
+	color: #333;
+	text-decoration: underline;
+	}
+
+a:hover {
+	color: #1A87BB;
 	}
 
 #footer strong {

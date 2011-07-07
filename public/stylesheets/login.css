@@ -1,0 +1,37 @@
+
+
+
+#login_logo {
+	background: url(img/logo_login.png) no-repeat left top;
+	width: 394px;
+	height: 173px;
+	text-indent: -9999999px;
+	float: left;
+	}
+
+#login_form {
+	background: url(img/login_bg.png) no-repeat left top;
+	width: 519px;
+	height: 47px;
+	float: left;
+	margin:47px 0 0 -8px;
+	padding:23px 0 0 24px;
+	}
+
+#login_form label {
+	display: none;
+	}
+
+#login_form input {
+	margin-left: 10px;
+	width: 200px;
+	}
+
+#login_form button {
+	background: url(img/login_button.gif) no-repeat left top;
+	height: 31px;
+	width: 31px;
+	text-indent: -9999999px;
+	margin-top: -4px;
+	margin-left: 20px;
+	}

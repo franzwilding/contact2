@@ -10,9 +10,6 @@ h1, h2, h3, h4, h5, h6 {font-size: 2em;}
 
 /* HARMONIZE LINKS, KILL BORDER ON IMG LINKS AND OUTLINE ON FIREFOX */
 a {text-decoration: underline; outline: none; }
-a:link, a:visited {color: #00f;}
-a:hover {color: #33f;}
-a:active {color: #fff;}
 a img, :link img, :visited img {border: none}
 
 /* REMOVE BROWSERS DEFAULT TABLE BORDERS */
