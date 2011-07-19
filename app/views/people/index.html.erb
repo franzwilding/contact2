@@ -4,7 +4,10 @@
 	<fieldset>
 		<legend>Suchen</legend>
 		
-		<input class="search" type="text" value="Suchbegriff eingeben" />
+		<div class="search_box">
+			<input class="search" type="text" value="Suchbegriff eingeben" />
+			<p class="loading">Laden...</p>
+		</div>
 		<button>Suchen</button>
 		<br />
 		<ul>
@@ -28,48 +31,11 @@
 	</fieldset>
 </form><!-- form.search ends here -->
 
-<hr />
+<div class="add button">
+	<a href="<%= new_person_path %>">Eine neue Person hinzufügen</a>
+</div>
 
-<a href="<%= new_person_path %>" class="button add">Neue Person hinzufügen</a>
-
-<ul class="list">
-	<li class="loading">
-		<p class="loading">Laden...</p>
-	</li>
-</ul>
-
-<script type="text/javascript">
-	$(document).ready(function(){
-		
-		$.get("<%= raw url_for(:controller => 'people', :format => 'json', :limit => 2, :offset => 0) %>", function(data){			
-			
-			html_string = '';
-			
-			$.each(data, function(index, value) {
-				
-				current_person = value["person"];
-				
-				html_string += '<li>';
-				html_string += '	<h3>' + current_person.firstname + ' ' + current_person.surname + '</h3><p>';
-				
-				if(current_person.phone) html_string += '	<span class="phone">' + current_person.phone + '</span>';
-				if(current_person.email) html_string += '	<a href="" class="email">' + current_person.email + '</a>';
-				
-				html_string += '	</p><ul class="meta">';
-				
-				if(current_person.facebook) html_string += '	<li class="facebook"><a href="http://facebook.com/' + current_person.facebook + '" target="_blank" title="Zum Facebook-Account dieses Users (in einem neuen Tab)">Facebook</a></li>';
-				if(current_person.twitter) html_string += '	<li class="twitter"><a href="http://twitter.com/' + current_person.twitter + '" target="_blank" title="Zum Twitter-Account dieses Users (in einem neuen Tab)">Twitter</a></li>';
-				if(current_person.website) html_string += '	<li class="website"><a href="http://' + current_person.website + '" target="_blank" title="Zur Website dieses Users (in einem neuen Tab)">Website</a></li>';
-				html_string += '</ul><a class="edit" title="Diesen Eintrag bearbeiten" href="people/' + current_person.id + '/edit">Bearbeiten</a></li>';
-			});
-			
-			$("ul.list").html(html_string);
-			
-		});		
-	});
-</script>
-
-<div class="export">
+<div class="export button">
 	<a href="#" class="tooltip">Diese Suche verwenden</a>
 	<div class="h">
 		<ul class="tooltip_menu">
@@ -79,3 +45,125 @@
 		</ul>
 	</div>
 </div>
+
+<hr />
+
+<ul class="list">
+	<li class="loading">
+		<p class="loading">Laden...</p>
+	</li>
+</ul>
+
+<script type="text/javascript">
+	
+	var init_search_input;
+	
+	$(document).ready(function(){
+		
+		
+		//set fieldgroups as variable
+		var fieldgroups = $.parseJSON('<%= raw @fieldgroups.to_json(:include => :fields) %>');
+		
+		
+		//set initial search-input value
+		init_search_input = $("form.search input.search").val();		
+		
+		//load details on current user
+		$("a.showdetails").live("click", function(){
+			$(this).removeClass("showdetails");
+			$(this).addClass("hidedetails");
+
+			var details = $(this).parent().parent().find("div.details");
+			details.slideDown("fast");
+			
+			//wenn dieser content noch nicht geladen wurde
+			if(details.html() == "") {
+				
+				details.html('<p class="loading">Laden...</a></p>');
+				
+				$.get("people/" + $(this).parent().parent().attr("name") + '.json', function(data){			
+					details.html(format_details(data["person"], fieldgroups));
+				});
+				
+			}	
+		});
+		
+		$("a.hidedetails").live("click", function(){
+			$(this).removeClass("hidedetails");
+			$(this).addClass("showdetails");
+			$(this).parent().parent().find("div.details").slideUp("fast");
+		});
+		
+		
+		//set my ajaxList-plugin to the ul
+		$("ul.list").fwAjaxList({
+			'loadingHTML'							: '<p class="loading">Laden...</p>', 
+			'createUrlFunction'				:	createUrl, 
+			'formatRowFunction'				: formatRow, 
+			'finishedUpdateFunction'	: finishedUpdate
+		});
+		
+		
+		//update list on search-value-change
+		
+		var old_timestamp = 0;
+		
+		$("input.search").keyup(function(event){
+	
+			//request nur jede 0.5 sec. wenn leute schnell tippen, killt das sonst den server
+			if(event.timeStamp - old_timestamp > 500) {
+				
+				$(this).next().show();
+				
+				$("ul.list").fwAjaxList("update");
+				old_timestamp = event.timeStamp;
+			}
+		});
+		
+	});
+	
+	
+	/**
+	 * createUrl()
+	 *
+	 * this function returns the url for the ajax-request.
+	 * you should put the query-logic in here and have to 
+	 * return the url as string
+	 */
+	var createUrl = function(init) {
+		
+		limit = 20;
+		
+		if(init) offset = 0;
+		else offset = $("ul.list > li").size();
+		
+		query = $("form.search input.search").val();
+		if(query == init_search_input) query		= "";
+		
+		url = "/people.json?limit= " + limit + " &offset=" + offset + "&query=" + query;
+		
+		return url;
+	}
+	
+	/**
+	 * formatRow(data)
+	 * 
+	 * this functions has the data of a response-row-object as argument
+	 * you have to return the final html-code for this row, inclusive li-tags
+	 */
+	var formatRow = function(data) {
+		return format_interaction_list(data["person"]);
+	}
+	
+	
+	/**
+	 * finishedUpdate
+	 *
+	 * this callback is called, whenever an update finished
+	 * you can use this function to hide loading-animation or so
+	 */
+	var finishedUpdate = function() {
+		$("input.search").next().fadeOut();
+	}
+	
+</script>

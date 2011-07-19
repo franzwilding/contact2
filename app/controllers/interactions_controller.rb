@@ -6,6 +6,7 @@ class InteractionsController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
+      format.json { render :json => @interactions }
       format.xml  { render :xml => @interactions }
     end
   end

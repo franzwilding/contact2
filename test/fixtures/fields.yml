@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: MyString
+  label: MyString
+  type: MyString
+  orderby: 1
+  required: false
+  fieldgroup_id: 1
+
+two:
+  name: MyString
+  label: MyString
+  type: MyString
+  orderby: 1
+  required: false
+  fieldgroup_id: 1

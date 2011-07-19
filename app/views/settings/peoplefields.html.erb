@@ -1,0 +1,24 @@
+<h1>Personenfelder</h1>
+<blockquote>Personenfeld sind spezielle Felder, die über die regulären Stammdaten hinausgehen. Du kannst hier neue Felder in Gruppen sortiert anlegen, um mehr Daten zu einer Person (zB.: ob sie vegetarisch isst) abspeichern zu können.</blockquote>
+
+<% @fieldgroups.each do |group| %>
+<h2><%= group.name %></h2>
+
+<ul class="peoplefields">
+		<% group.fields.each do |field| %>
+			<li><%= field.label %> (<%= field.itype %>)<%= ", verpflichtend" if field.required %></li>
+		<% end %>
+</ul><!-- peoplefields -->
+<div class="add button">
+	<a href="<%= raw url_for(:controller => 'fields', :action => 'new', :group => group.id) %>">Felder hinzufügen</a>
+</div>
+<hr />
+<% end %>
+
+<form action="/settings/addpeoplegroup">
+	<fieldset>
+		<label for="add_fieldgroup_field">Eine neue Gruppe hinzufügen</label>
+		<input id="add_fieldgroup_field" type="text" value="Name" name="name" />
+		<input style="margin-top:10px; margin-bottom:0;" type="submit" value="Hinzufügen" />
+	</fieldset>
+</form>

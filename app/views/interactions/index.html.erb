@@ -1,27 +1,70 @@
-<h1>Listing interactions</h1>
+<h1>Alle Interactions anzeigen</h1>
 
-<table>
-  <tr>
-    <th>Title</th>
-    <th>Description</th>
-    <th>Happend at</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<div class="add button">
+	<a href="<%= new_interaction_path %>">Eine neue Interaction hinzufügen</a>
+</div>
 
-<% @interactions.each do |interaction| %>
-  <tr>
-    <td><%= interaction.title %></td>
-    <td><%= interaction.description %></td>
-    <td><%= interaction.happend_at %></td>
-    <td><%= link_to 'Show', interaction %></td>
-    <td><%= link_to 'Edit', edit_interaction_path(interaction) %></td>
-    <td><%= link_to 'Destroy', interaction, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
+<hr />
 
-<br />
+<%
 
-<%= link_to 'New Interaction', new_interaction_path %>
+#<ul class="list">
+#	<-% @interactions.each do |interaction| %->
+#  <li>
+#    <h3><a class="showdetails" href="javascript:;"><-%= interaction.title %->, <-%= interaction.happend_at %-></a></h3>
+#    <a class="edit" title="Diesen Eintrag bearbeiten" href="<%= edit_interaction_path(interaction) %->">Bearbeiten</a>
+#  </li>
+#	<% end %->
+#</ul>
+#
+%>
+
+<ul class="list">
+</ul>
+
+<script type="text/javascript">
+	
+	$(document).ready(function(){
+		$("ul.list").fwAjaxList({
+			'loadingHTML'					: '<p class="loading">Laden...</p>', 
+			'createUrlFunction'		:	createUrl, 
+			'formatRowFunction'		: formatRow
+		});
+		
+	});
+	
+	
+	/**
+	 * createUrl()
+	 *
+	 * this function returns the url for the ajax-request.
+	 * the init-parameter is true or false, depending if it it's the first, 
+	 * or any other call
+	 * you should put the query-logic in here and have to 
+	 * return the url as string
+	 */
+	var createUrl = function(init) {
+		url = "interactions.json";		
+		
+		return url;
+	}
+	
+	/**
+	 * formatRow(data)
+	 * 
+	 * this functions has the data of a response-row-object as argument
+	 * you have to return the final html-code for this row, inclusive li-tags
+	 */
+	var formatRow = function(data) {
+		
+		cur_i = data["interaction"];
+		
+		html_content = '';
+		html_content += '<li>';
+		html_content += '<h3>' + cur_i["title"] + '</h3>';
+		html_content += '</li>';
+		
+		return html_content;
+	}
+	
+</script>

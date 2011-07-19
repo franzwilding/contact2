@@ -11,19 +11,121 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :title %><br />
+  <fieldset>
+  	<legend>Stammdaten</legend>
+    <%= f.label :title %>
     <%= f.text_field :title %>
-  </div>
-  <div class="field">
-    <%= f.label :description %><br />
+
+    <%= f.label :description %>
     <%= f.text_area :description %>
-  </div>
-  <div class="field">
-    <%= f.label :happend_at %><br />
-    <%= f.datetime_select :happend_at %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+
+    <%= f.label :happend_at %>
+    <div class="datetime"><%= f.datetime_select :happend_at %></div>
+  </fieldset>
+  
+  <fieldset id="findpeople_fieldset1">
+  	<legend>Wer ist beteiligt?</legend>
+  	<label for="findpeople1">Nach Personen suchen: </label>
+  	<input id="findpeople1" type="text"  class="findpeople" name="people" value="" />
+  	<ul id="findpeople_list1" class="input_dropdown">
+  	</ul>
+  	
+  	<ul id="findpeople_selected1" class="selected_box">
+  	</ul>
+  </fieldset>
+  
+  <hr />
+  
+  <%= f.submit "Speichern" %>
+  
+  <script type="text/javascript">
+	  
+	  //callback von findpeople definiert in main.js. name ist dynamisch: output_#id von input
+	  function output_findpeople1(people) {
+	  		
+	  	var insert_html = "";
+	  		
+			$.each(people, function(index, value) {
+				
+				cur_row = format_listitem(value["person"], true);
+				
+				//wenn wir schon eine person in der box haben, müssen wir dieses element auf aktiv schalten
+				if($("#findpeople_fieldset1 input[name=people]").val().indexOf(";" + value["person"].id + ";") >= 0) {
+					cur_row = cur_row.replace('<li name="' + value["person"].id + '">', '<li name="' + value["person"].id + '" class="active">');
+				}
+				
+				insert_html += cur_row;
+
+			});
+			
+			$("#findpeople_list1").html(insert_html);
+			$("#findpeople_list1").slideDown();
+			
+		}
+		
+		function remove(id) {
+		
+			//remove active class in selectmode
+			$("#findpeople_list1 li[name=" + id + "]").removeClass("active");
+			
+			//remove element from box
+			$("#findpeople_selected1 li[name=" + id + "]").fadeOut("fast", function(){
+				$("#findpeople_selected1 li[name=" + id + "]").remove();
+			});
+			
+			
+			cur_val = $("#findpeople_fieldset1 input[name=people]").val();
+			$("#findpeople_fieldset1 input[name=people]").val(cur_val.replace(';' + id + ';', ''));	
+		}
+		
+		function add(id) {
+			
+			//add active class in selectmode
+			$("#findpeople_list1 li[name=" + id + "]").addClass("active");
+			
+			//add element in box
+			$("#findpeople_selected1").append('<li name="' + id + '" style="display:none;"><img src="' + img + '" alt=" ' + name + ' " /> ' + name + '</li>');
+			$("#findpeople_selected1 li[name=" + id + "]").fadeIn();
+			
+			cur_val = $("#findpeople_fieldset1 input[name=people]").val();
+			$("#findpeople_fieldset1 input[name=people]").val(cur_val + ';' + id + ';');
+		}
+		
+		$(document).ready(function(){
+			
+			//wenn wir das fieldset verlassen, schließt sich die dropdownbox
+			$("#findpeople_fieldset1").mouseleave(function(){
+				$("#findpeople_list1").slideUp();
+			});
+			
+			
+			$("#findpeople_selected1 li").live("click", function(){
+				remove($(this).attr("name"));
+			});
+			
+			//wenn wir eine person auswählen, wird diese der selectedpeople_box hizugefügt
+			$("#findpeople_list1 li").live("click", function(){
+				
+				id = $(this).attr("name");
+				
+				//wenn wir schon aktiv sind, dann entfernen wir das bild. ansonsten fügen wir es ein
+				if($(this).hasClass("active")) {
+					remove(id);
+					
+				}
+				
+				//wir fügen das ausgewählte bild ein
+				else {
+					img = $(this).find("img").attr("src");
+					name = $(this).find("h3").text();
+					
+					add(id);
+				}
+				
+			});
+			
+		});
+		
+	</script>
+  
 <% end %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110630152631) do
+ActiveRecord::Schema.define(:version => 20110714154050) do
 
   create_table "events", :force => true do |t|
     t.string   "title"
@@ -21,12 +21,43 @@ ActiveRecord::Schema.define(:version => 20110630152631) do
     t.datetime "updated_at"
   end
 
+  create_table "fieldgroups", :force => true do |t|
+    t.string   "name"
+    t.integer  "sortindex"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "fields", :force => true do |t|
+    t.string   "name"
+    t.string   "label"
+    t.string   "itype"
+    t.integer  "orderby"
+    t.boolean  "required"
+    t.integer  "fieldgroup_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "fieldvalues", :force => true do |t|
+    t.integer  "person_id"
+    t.integer  "field_id"
+    t.text     "value"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "interactions", :force => true do |t|
     t.string   "title"
     t.text     "description"
     t.datetime "happend_at"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "interactions_people", :id => false, :force => true do |t|
+    t.integer "interaction_id"
+    t.integer "person_id"
   end
 
   create_table "lists", :force => true do |t|

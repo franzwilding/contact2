@@ -47,6 +47,43 @@
 
 	</fieldset>
 	
+	<% @fields.each do |group| %>
+		<fieldset>
+			<legend><%= group.name %></legend>
+			
+			<% group.fields.each do |field| %>
+				
+				<% if field.itype != "BOOLEAN" %>
+					<label for="field_<%= field.id %>"><%= field.label %></label>
+				<% end %>
+				
+				<%
+					value = ""
+					value = @person.fieldvalues.find_by_field_id(field.id).value if @person.fieldvalues.find_by_field_id(field.id)
+				%>
+				
+				<% case field.itype
+					 when "STRING" %>
+				  <input type="text" id="field_<%= field.id %>" name="field[<%= field.id %>]" value="<%= value %>" size="30" />
+				<% when "TEXT" %>
+					<textarea  id="field_<%= field.id %>" name="field[<%= field.id %>]"><%= value %></textarea>
+				<% when "BOOLEAN" %>
+					<input id="field_<%= field.id %>" type="checkbox" name="field[<%= field.id %>]" 
+						<% if value == "on" %>
+							checked="checked"
+						<% end %>/>
+					<label for="field_<%= field.id %>"><%= field.label %></label>
+				<% end %>
+				
+
+				
+			<% end %>
+			
+			
+		</fieldset>
+	<% end %>
+
+	
 	<hr />
   
   <%= f.submit "Speichern" %>

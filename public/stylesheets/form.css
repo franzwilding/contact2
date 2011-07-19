@@ -1,0 +1,236 @@
+/***************/
+/* FORM STYLES */
+/***************/
+
+form {
+	}
+
+fieldset {
+	border: none;
+	border-right:1px solid white;
+	border-bottom: 1px solid white;
+	background: url(img/op_black_10.png) left top;
+	border-radius: 5px;
+	float: left;
+	margin: 20px;
+	max-width: 600px;
+	padding-bottom: 20px;
+	}
+
+legend {
+	color: #1A87BB;
+	text-align: center;
+	width: 100%;
+	text-shadow: 1px 1px white;
+	display: block;
+	text-transform: uppercase;
+	font-size: 15px;
+	}
+
+label {
+	color: #666666;
+	text-shadow: 1px 1px white;
+	font-size: 20px;
+	display: block;
+	font-weight: 200;
+	width: 300px;
+	margin: 10px 20px 5px;
+	}
+
+input {
+	background: white url(img/input_bg.gif) repeat-x left top;
+	border: 1px solid #CCCCCC;
+	padding: 4px;
+	height: 24px;
+	font-size: 16px;
+	margin: 0 20px;
+	display: block;
+	width: 343px;
+	border-radius: 5px;
+	font-weight: 200;
+	letter-spacing: 1px;
+	opacity: 0.7;
+	color: #666;
+	}
+
+textarea {
+	width: 343px;
+	float: left;
+	color: #666666;
+	background: white url(img/input_bg.gif) repeat-x left top;
+	border: 1px solid #CCCCCC;
+	padding: 4px;
+	margin: 0 20px;
+	height: 200px;
+	font-family: "Helvetica Neue", Helvetica;
+	resize: vertical;
+	font-size: 12px;
+	border-radius: 5px;
+	font-weight: 200;
+	line-height: 150%;
+	letter-spacing: 1px;
+	opacity: 0.7;
+	}
+
+input:focus, textarea:focus {
+	color: #1A87BB;
+	opacity: 1;
+	}
+
+input[type="checkbox"] {
+	width: auto;
+	margin-top: 15px;
+	float: left;
+	}
+
+input[type="submit"] {
+	background: url(img/button_bg.png) no-repeat left top;
+	width: 131px;
+	height: 31px;
+	color: white;
+	text-shadow: -1px -1px #125A80;
+	font-weight: normal;
+	font-size: 15px;
+	text-align: center;
+	border: none;
+	cursor: pointer;
+	margin: 0 auto 20px auto;
+	opacity: 1;
+	}
+
+button {
+	float: left;
+	display: block;
+	border: none;
+	cursor: pointer;
+	}
+	
+	
+.findpeople_box {
+	position: relative;
+	}
+
+input.findpeople {
+	padding-right: 28px;
+	width: 500px;
+	}	
+	
+.findpeople_box p.loading {
+	text-indent: -99999px;
+	position: absolute;
+	margin: 0;
+	right:29px;
+	top:9px;
+	padding: 0;
+	height: 16px;
+	width: 16px;
+	display: none;
+	}	
+	
+ul.input_dropdown {
+	background: #EDEDED url(img/input_dropdown_bg.png) repeat-x left top;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	width: 512px;
+	margin: 0 30px;
+	padding: 10px 0;
+	list-style: none;
+	float: left;
+	box-shadow: 0 0 5px #6C6C6C;
+	display: none;
+	}	
+
+ul.input_dropdown li {
+	border-top: 1px solid #F9F9F9;
+	border-bottom: 1px solid #E4E4E4;
+	padding: 0;
+	float: left;
+	width: 92%;
+	padding: 0 4%;
+	height: 24px;
+	font-size: 14px;
+	cursor: pointer;
+	}
+
+ul.input_dropdown li img {
+	height: 20px;
+	width: 20px;
+	}
+
+ul.input_dropdown li:hover {
+	background: #1A87BB;
+	}
+
+ul.input_dropdown li.active {
+	background: #6cc72a url(icons/16_ok_white.png) no-repeat 490px 6px;
+	}
+
+ul.input_dropdown li.active a {
+	color: white;
+	}
+	
+ul.input_dropdown li h3 {
+	font-size: inherit;
+	padding-top: 3px;
+	font-weight: 200;
+	display: block;
+	}	
+	
+ul.input_dropdown li h3 a {
+	text-decoration: none;
+	display: block;
+	float: none;
+	}	
+	
+ul.input_dropdown li h3 a:hover, ul.input_dropdown li:hover a {	
+	color: white;
+	}
+
+ul.selected_box {
+	list-style: none;
+	clear: both;
+	width: 512px;
+	margin: 20px;
+	float: left;
+	color: #666666;
+	background: white url(img/input_bg.gif) repeat-x left top;
+	border: 1px solid #CCCCCC;
+	padding: 10px;
+	min-height: 52px;
+	font-size: 12px;
+	border-radius: 5px;
+	font-weight: 200;
+	line-height: 130%;
+	letter-spacing: 1px;
+	opacity: 0.7;
+	}
+
+ul.selected_box:hover {
+	opacity: 1;
+	}
+	
+ul.selected_box li {
+	float: left;
+	margin: 4px;
+	width: 150px;
+	padding:5px;
+	border: 1px solid white;
+	cursor: pointer;
+	}	
+	
+ul.selected_box li:hover {
+	background: #eee url(icons/16_delete_grey.png) 142px 4px no-repeat;
+	border-radius: 5px;
+	text-shadow: 1px 1px white;
+	box-shadow: 0 0 2px #999;
+	}
+	
+form .datetime {
+	margin: 0 20px;
+	background: url(img/op_black_10.png);
+	padding: 5px;
+	border-radius: 5px;
+	}
+	
+	
+	

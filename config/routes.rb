@@ -1,5 +1,7 @@
 Contact2::Application.routes.draw do
 
+  resources :fields
+
 resources :lists
 resources :interactions
 resources :events

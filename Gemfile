@@ -7,6 +7,11 @@ gem 'rails', '3.0.5'
 
 gem 'mysql'
 
+gem 'unicode'
+gem 'shared-mime-info'
+
+gem 'scoped_search'
+
 # Use unicorn as the web server
 # gem 'unicorn'
 
