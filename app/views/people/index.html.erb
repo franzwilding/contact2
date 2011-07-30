@@ -10,22 +10,37 @@
 		</div>
 		<button>Suchen</button>
 		<br />
+		
+		<h3>Beschränken auf:</h3>
 		<ul>
-			<li class="title">Sortieren nach: </li>
-			<li>
-				<select>
-					<option>Sortieren nach</option>
-					<option>Wien</option>
-					<option>Steiermark</option>
-					<option>Tirol</option>
-					<option>Vorarlberg</option>
-				</select>
-			</li>
-			<!--li><input type="checkbox" /> <label>Aktis</label></li-->
+		  <% @whereable.each do |key, value| %>
+		  <li>
+		    <% if(value.kind_of?(Array)) %>
+		      <select>
+		          <option value="">All <%= key %></option>
+		        <% value.each do |item| %>
+		          <option value="<%= item %>"><%= item %></option>
+		        <% end %>
+		      </select>
+		    <% else %>
+		      <input type="checkbox" />
+  			 <label><%= key %></label>
+		    <% end %>
+		  </li>
+		  <% end %>
 		</ul>
 		
+		<br />
+		
+		<h3>Sortieren nach:</h3>
 		<ul>
-			<li class="title">Beschränken auf: </li>
+			<li>
+				<select>
+				  <% @sortable.each do |item| %>
+				    <option value="<%= item %>"><%= item %></option>
+				  <% end %>
+				</select>
+			</li>
 		</ul>
 		
 	</fieldset>

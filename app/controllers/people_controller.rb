@@ -5,15 +5,34 @@ class PeopleController < ApplicationController
   # GET /people.json
   def index
 		
-		logger.debug params.has_key? :limit
-		logger.debug params.has_key? :offset
-		
+		#do the big select		
     @people = Person.search_for(params[:query]).limit(params[:limit].to_i ? params[:limit].to_i : 30).offset(params[:offset].to_i ? params[:offset].to_i : 0)
-    
-		@fieldgroups = Fieldgroup.all
 		
+		#respond_to formats
     respond_to do |format|
-      format.html # index.html.erb
+      
+      format.html {
+        
+        #fieldgroups for the people detail view
+        @fieldgroups = Fieldgroup.all
+        
+        #array of keys, the searchform its sortable for
+        @sortable = [
+          "surname", 
+          "firstname", 
+          "created_at", 
+          "address"
+        ]
+        
+        #array of where-able fields
+        @whereable = {}
+        @whereable["provinces"] = ["Wien", "Tirol", "Steiermark"]
+        @whereable["avatar"] = TRUE
+        @whereable["twitter"] = TRUE 
+        @whereable["facebook"] = TRUE
+        
+      }
+      
       format.xml  { render :xml => @people }
       format.json  { render :json => @people }
     end
@@ -35,11 +54,13 @@ class PeopleController < ApplicationController
   # GET /people/new.xml
   def new
     @person = Person.new
+    @person.address = Address.new
+    
     @fields = Fieldgroup.all
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @person }
+      format.xml  { render :xml => @person.include(:person) }
     end
   end
 

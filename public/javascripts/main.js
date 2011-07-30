@@ -27,20 +27,20 @@ $("a.tooltip").each(function(){
 /**************************/
 /* FIND-PEOPLE-INPUTFIELD */
 /**************************/
-$("input.findpeople").each(function(){
+//$("input.findpeople").each(function(){
 	
 	/**
 	 * für jedes findpeople feld müssen wir uns neben ajax auch um loading und anzeige kümmern
 	 */
-	$(this).wrap('<div class="findpeople_box" />');
-	$(this).after('<p class="loading">Laden...</p>');
-	$(this).after('<input type="hidden" name="' + $(this).attr("name") + '" value="" />');
-	$(this).attr("name", "");
-});
+	//$(this).wrap('<div class="findpeople_box" />');
+	//$(this).after('<p class="loading">Laden...</p>');
+	//$(this).after('<input type="hidden" name="' + $(this).attr("name") + '" value="" />');
+	//$(this).attr("name", "");
+//});
 
-var old_timestamp = 0;
+//var old_timestamp = 0;
 
-$("input.findpeople").keyup(function(event){
+/*$("input.findpeople").keyup(function(event){
 	
 	//request nur jede 0.5 sec. wenn leute schnell tippen, killt das sonst den server
 	if(event.timeStamp - old_timestamp > 500) {
@@ -50,7 +50,7 @@ $("input.findpeople").keyup(function(event){
 		find_people($(this).attr("value"), "output_" + $(this).attr("id"), $(this).parent().find("p.loading"));
 		old_timestamp = event.timeStamp;
 	}
-});
+});*/
 
 
 });
@@ -59,7 +59,7 @@ $("input.findpeople").keyup(function(event){
 /*************************/
 /* FIND PEOPLE INPUT BOX */
 /*************************/
-function find_people(searchstring, callback, loading) {
+/*function find_people(searchstring, callback, loading) {
 	$.get("/people.json?limit=10&query=" + searchstring, function(data){
 		
 		//wenn unsere callbackfuntion existiert, können wir diese aufrufen
@@ -70,7 +70,7 @@ function find_people(searchstring, callback, loading) {
 		loading.fadeOut();
 		
 	});
-}
+}*/
 
 
 /***********************/
@@ -102,6 +102,23 @@ function format_person_list(current_person, small) {
 		html_string += '<div class="details"></div>';
 	}
 	
+	html_string += '</li>';
+	
+	return html_string;
+}
+
+
+
+
+
+/*********************/
+/* FORTMAT NAME LIST */
+/*********************/
+function format_name_list(item) {
+	
+	html_string = '';	
+	html_string += '<li name="' + item.id + '">';
+	html_string += '	<h3><a class="showdetails" href="javascript:;">' + item.name + '</a></h3>';
 	html_string += '</li>';
 	
 	return html_string;

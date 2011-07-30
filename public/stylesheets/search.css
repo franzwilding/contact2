@@ -16,6 +16,8 @@ form.search fieldset {
 	background: none;
 	border: none;
 	float: none;
+	width: 100%;
+	max-width: 100%;
 	}
 
 form.search fieldset legend {
@@ -34,7 +36,17 @@ form.search input.search {
 	height: auto;
 	margin: 0;
 	float: left;
+	border-radius: 0;
 	}
+
+form.search p.loading {
+  position: absolute;
+  right:170px;
+  top:0;
+  padding-top: 33px;
+  padding-left: 40px;
+  text-indent: -999999px;
+  }
 
 form.search button {
 	background: url(img/search_button.png) no-repeat left top;
@@ -44,8 +56,18 @@ form.search button {
 	text-indent: -9999999px;
 	}
 
+form.search h3 {
+  color: #666666;
+  font-size: 14px;
+  float: left;
+  text-transform: uppercase;
+  text-shadow: 1px 1px white;
+  margin: 11px 10px 0 0;
+  }
+
 form.search ul {
-	width: 94%;
+	width: 80%;
+	height: 20px;
 	float: left;
 	margin-top: 10px;
 	list-style: none;
@@ -71,3 +93,7 @@ form.search ul li input {
 	float: left;
 	}
 
+form.search ul li input[type="checkbox"] {
+  margin: 0 5px;
+  height: 16px;
+  }

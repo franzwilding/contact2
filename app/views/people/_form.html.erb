@@ -1,3 +1,4 @@
+
 <%= form_for(@person) do |f| %>
   <% if @person.errors.any? %>
     <div id="error_explanation">
@@ -22,14 +23,229 @@
 	  <%= f.text_field :surname %>
 	
 	  <%= f.label :email %>
-	  <%= f.text_field :email %>
+	  <%= f.email_field :email %>
 	
 	  <%= f.label :phone %>
-	  <%= f.text_field :phone %>
+	  <%= f.telephone_field :phone %>
 	  
 	  <%= f.label :avatar %>
-	  <%= f.text_field :avatar %>
+	  <%= f.file_field :avatar %>
 
+	</fieldset>
+	
+	<fieldset>
+		
+		<legend>Adresse</legend>
+    <%= f.fields_for :address do |a| %>
+      
+      <%= a.label :street %>
+      <%= a.text_field :street %>
+      
+      <%= a.label :number %>
+      <%= a.text_field :number %>
+      
+      <%= a.label :PLZ %>
+      <%= a.text_field :PLZ %>
+      
+      
+      
+      <% ##### CITY STARTS ##### %>
+      <label for="city">City: </label>
+      <div class="findpeople_box">
+        <input id="city" type="text"  class="findpeople" name="city" value="" />
+        <p class="loading">Laden...</p>
+      </div>
+      
+      <ul id="city_find_list" class="input_dropdown">
+      </ul>
+      
+      <script type="text/javascript">
+        
+        $(document).ready(function(){
+          
+          //set my ajaxList-plugin to the ul
+      		$("#city_find_list").fwAjaxList({
+      			'loadingHTML'							: '<p class="loading">Laden...</p>', 
+      			'createUrlFunction'				:	createUrl, 
+      			'formatRowFunction'				: formatRow, 
+      			'finishedUpdateFunction'	: finishedUpdate
+      		});
+      		
+      		
+      		//update list on search-value-change
+      		var old_timestamp = 0;
+      		
+      		$("input#city").keyup(function(event){
+      	
+      			//request nur jede 0.5 sec. wenn leute schnell tippen, killt das sonst den server
+      			if(event.timeStamp - old_timestamp > 500) {
+      				
+      				$(this).next().show();
+      				
+      				$("#city_find_list").fwAjaxList("update");
+      				old_timestamp = event.timeStamp;
+      			}
+      		});
+      		
+      		//when the user selects an item
+      		$("input#city").parent().parent().mouseleave(function(){
+            $("#city_find_list").slideUp();
+          });
+    			
+    			//add / remove person
+    			$("#city_find_list li").live("click", function(){
+
+        		$("input#city").val($(this).find("h3 a").text());
+        		$("#city_find_list").slideUp();
+        		
+        	});
+        });
+      	
+      	
+      	/**
+      	 * createUrl()
+      	 *
+      	 * this function returns the url for the ajax-request.
+      	 * you should put the query-logic in here and have to 
+      	 * return the url as string
+      	 */
+      	var createUrl = function(init) {
+      		
+      		limit = 20;
+      		query = $("input#city").val();
+      		url = "/cities.json?query=" + query;
+      		
+      		return url;
+      	}
+      	
+      	/**
+      	 * formatRow(data)
+      	 * 
+      	 * this functions has the data of a response-row-object as argument
+      	 * you have to return the final html-code for this row, inclusive li-tags
+      	 */
+      	var formatRow = function(data) {
+      		return format_name_list(data["city"]);
+      	}
+      	
+      	
+      	/**
+      	 * finishedUpdate
+      	 *
+      	 * this callback is called, whenever an update finished
+      	 * you can use this function to hide loading-animation or so
+      	 */
+      	var finishedUpdate = function() {
+    			$("#city_find_list").slideDown();
+    			$("input#city").next().fadeOut();
+      	}
+    		
+      </script>
+      <% ##### CITY ENDS ##### %>
+      
+      
+      
+      
+      
+      
+      <% ##### PROVINCE STARTS ##### %>
+      <label for="province">Province: </label>
+      <div class="findpeople_box">
+        <input id="province" type="text"  class="findpeople" name="province" value="" />
+        <p class="loading">Laden...</p>
+      </div>
+      
+      <ul id="province_find_list" class="input_dropdown">
+      </ul>
+      
+      <script type="text/javascript">
+        
+        $(document).ready(function(){
+          
+          //set my ajaxList-plugin to the ul
+      		$("#province_find_list").fwAjaxList({
+      			'loadingHTML'							: '<p class="loading">Laden...</p>', 
+      			'createUrlFunction'				:	p_createUrl, 
+      			'formatRowFunction'				: p_formatRow, 
+      			'finishedUpdateFunction'	: p_finishedUpdate
+      		});
+      		
+      		
+      		//update list on search-value-change
+      		var old_timestamp1 = 0;
+      		
+      		$("input#province").keyup(function(event){
+      	
+      			//request nur jede 0.5 sec. wenn leute schnell tippen, killt das sonst den server
+      			if(event.timeStamp - old_timestamp1 > 500) {
+      				
+      				$(this).next().show();
+      				
+      				$("#province_find_list").fwAjaxList("update");
+      				old_timestamp1 = event.timeStamp;
+      			}
+      		});
+      		
+      		//when the user selects an item
+      		$("input#province").parent().parent().mouseleave(function(){
+            $("#province_find_list").slideUp();
+          });
+    			
+    			//add / remove person
+    			$("#province_find_list li").live("click", function(){
+
+        		$("input#province").val($(this).find("h3 a").text());
+        		$("#province_find_list").slideUp();
+        		
+        	});
+        });
+      	
+      	
+      	/**
+      	 * createUrl()
+      	 *
+      	 * this function returns the url for the ajax-request.
+      	 * you should put the query-logic in here and have to 
+      	 * return the url as string
+      	 */
+      	var p_createUrl = function(init) {
+      		
+      		limit = 20;
+      		query = $("input#province").val();
+      		url = "/provinces.json?query=" + query;
+      		
+      		return url;
+      	}
+      	
+      	/**
+      	 * formatRow(data)
+      	 * 
+      	 * this functions has the data of a response-row-object as argument
+      	 * you have to return the final html-code for this row, inclusive li-tags
+      	 */
+      	var p_formatRow = function(data) {
+      		return format_name_list(data["province"]);
+      	}
+      	
+      	
+      	/**
+      	 * finishedUpdate
+      	 *
+      	 * this callback is called, whenever an update finished
+      	 * you can use this function to hide loading-animation or so
+      	 */
+      	var p_finishedUpdate = function() {
+    			$("#province_find_list").slideDown();
+    			$("input#province").next().fadeOut();
+      	}
+    		
+      </script>
+      <% ##### PROVINCES ENDS ##### %>
+      
+      
+
+            
+    <% end %>
 	</fieldset>
 	
 	<fieldset>
@@ -37,7 +253,7 @@
 		<legend>Web 2.0</legend>
 		
 	  <%= f.label :facebook %>
-	  <%= f.text_field :facebook %>
+	  <%= f.url_field :facebook %>
 	
 	  <%= f.label :twitter %>
 	  <%= f.text_field :twitter %>

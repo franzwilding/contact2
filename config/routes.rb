@@ -1,7 +1,10 @@
 Contact2::Application.routes.draw do
 
-  resources :fields
+  resources :addresses
 
+resources :provinces
+resources :cities
+resources :fields
 resources :lists
 resources :interactions
 resources :events
