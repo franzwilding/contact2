@@ -1,11 +1,13 @@
 (function($){
 	
+	
 	/***** SETTINGS *****/
 	var settings = {
   	'loadingHTML'         			: '<p class="loading">Loading...</p>', 
   	'createUrlFunction'					: null, 
   	'formatRowFunction'					: null, 
-  	'finishedUpdateFunction'		: null
+  	'finishedUpdateFunction'		: null, 
+  	'updateOnScroll'            : true
   };
 
 
@@ -26,21 +28,26 @@
 				if (options) { 
 					$.extend(settings, options);
 				}
+				
+				$(this).data("fwAjaxList", options);
 	
 	    	//add a loading animation on init
 				$(this).html('<li>' + settings['loadingHTML'] + '</li>');	
 	    	
 	    	//initial call data
-	    	methods['getData'].call(this, true);
+	    	//methods['getData'].call(this, true);
 	    	
 	    	var curObj = this;
 	    	
-	    	//bind the scrollto-plugin to the 
-	    	$(window).bind('scroll', function(){
-	    		if($(window).scrollTop() == $(document).height() - $(window).height()){
-	    			methods['getData'].call(curObj, false);
-	    		}
-	    	});
+	    	if(settings['updateOnScroll']) {
+  	    	//bind the scrollto-plugin to the 
+	       	$(window).bind('scroll', function(){
+	      		if($(window).scrollTop() == $(document).height() - $(window).height()){
+	      			methods['getData'].call(curObj, false);
+	     	   	}
+	       	});
+	      }
+        
 	    	
 	    });
     }, 
@@ -49,29 +56,38 @@
     /**
      * getData
      */
-    getData : function(init) {
-    	
-    	var curObj = this;
-    	
-    	//do the ajax-call to get the json response
-    	$.get(settings['createUrlFunction'].call(this, init), function(data){
-    		
-    		if(init) {
-    			$(curObj).html("");
-    		}
-    		
-    		$.each(data, function(index, value) {
-    			
-    			$(curObj).append(settings['formatRowFunction'].call(curObj, value));
-    			
-    		});
-    		
-    		settings['finishedUpdateFunction'].call(curObj);
-    		
-    	});
-    	
-    }, 
     
+    getData : function(init) {
+      
+      var curObj = this;
+      
+      return $(this).each(function(){
+        
+        options = $(this).data("fwAjaxList");
+        
+        //do the ajax-call to get the json response
+      	$.get(options['createUrlFunction'].call(this, init), function(data){
+      		
+      		if(init) {
+      			$(curObj).html("");
+      		}
+      		
+      		$.each(data, function(index, value) {
+      			
+      			$(curObj).append(options['formatRowFunction'].call(curObj, value));
+      			
+      		});
+      		
+      		options['finishedUpdateFunction'].call(curObj);
+      		
+      	});
+        
+      
+      });
+      
+    }, 
+
+
     
     /**
      * update

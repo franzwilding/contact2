@@ -157,7 +157,7 @@ ul.input_dropdown li img {
 	width: 20px;
 	}
 
-ul.input_dropdown li:hover {
+ul.input_dropdown li:hover, ul.input_dropdown li.hover {
 	background: #1A87BB;
 	}
 
@@ -165,7 +165,7 @@ ul.input_dropdown li.active {
 	background: #6cc72a url(icons/16_ok_white.png) no-repeat 490px 6px;
 	}
 
-ul.input_dropdown li.active a {
+ul.input_dropdown li.active a, ul.input_dropdown li.hover a {
 	color: white;
 	}
 	

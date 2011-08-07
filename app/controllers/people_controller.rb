@@ -5,8 +5,27 @@ class PeopleController < ApplicationController
   # GET /people.json
   def index
 		
+		where = ""
+		
+		if(params["whereable"])
+  		params["whereable"].each do |key, value|
+  		  if(key && value)
+          
+          value = '1' if value == "checked"
+          #key = 'addresses.provinces.name' if key == "provinces"
+          
+          where += key + " = '" + value + "' AND "
+          
+  		  end
+  		end
+		end
+		
+		#params["sortable"] = "province.name" if params["sortable"] == "province"
+		
+		logger.debug where
+		
 		#do the big select		
-    @people = Person.search_for(params[:query]).limit(params[:limit].to_i ? params[:limit].to_i : 30).offset(params[:offset].to_i ? params[:offset].to_i : 0)
+    @people = Person.search_for(params[:query]).order(params[:sortable] ? params["sortable"] +" "+params["asc"] : "surname ASC").limit(params[:limit].to_i ? params[:limit].to_i : 30).offset(params[:offset].to_i ? params[:offset].to_i : 0)
 		
 		#respond_to formats
     respond_to do |format|
@@ -21,12 +40,12 @@ class PeopleController < ApplicationController
           "surname", 
           "firstname", 
           "created_at", 
-          "address"
+          "province"
         ]
         
         #array of where-able fields
         @whereable = {}
-        @whereable["provinces"] = ["Wien", "Tirol", "Steiermark"]
+        @whereable["province.name"] = ["Wien", "Tirol", "Steiermark"]
         @whereable["avatar"] = TRUE
         @whereable["twitter"] = TRUE 
         @whereable["facebook"] = TRUE
@@ -42,11 +61,11 @@ class PeopleController < ApplicationController
   # GET /people/1.xml
   def show
     @person = Person.find(params[:id])
-
+    
     respond_to do |format|
       format.html # show.html.erb
       format.xml  { render :xml => @person }
-      format.json  { render :json => @person.to_json(:include => :fieldvalues) }
+      format.json  { render :json => @person.to_json(:include => [:fieldvalues, :address, :city, :province]) }
     end
   end  
 
@@ -60,7 +79,7 @@ class PeopleController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @person.include(:person) }
+      format.xml  { render :xml => @person.include(:person, :include => :fieldvalues) }
     end
   end
 
@@ -73,6 +92,10 @@ class PeopleController < ApplicationController
   # POST /people
   # POST /people.xml
   def create
+    
+    @person.city = City.find_or_create_by_name(params[:city]) if params[:city] != ""
+    @person.province = Province.find_or_create_by_name(params[:province]) if params[:province] != ""
+    
     @person = Person.new(params[:person])
 		
     respond_to do |format|
@@ -100,19 +123,25 @@ class PeopleController < ApplicationController
   def update
     @person = Person.find(params[:id])
 
+    @person.city = City.find_or_create_by_name(params[:city]) if params[:city] != ""
+    @person.province = Province.find_or_create_by_name(params[:province]) if params[:province] != ""
+    
+    
     respond_to do |format|
       if @person.update_attributes(params[:person])
       	
-      	#wir mŸssen fŸr alle checkboxen einen string: "off" als value erzeugen, da html-forms den status von leere checkboxen nicht als eigene variable mitschicken
-      	Field.all.each do |field|
-      		params[:field][field.id] = "off" if field.itype == "BOOLEAN" and !params[:field][field.id]
-      	end
+      	if params[:field]
+        	#wir mŸssen fŸr alle checkboxen einen string: "off" als value erzeugen, da html-forms den status von leere checkboxen nicht als eigene variable mitschicken
+        	Field.all.each do |field|
+        		params[:field][field.id] = "off" if field.itype == "BOOLEAN" and !params[:field][field.id]
+        	end
       	
-      	params[:field].each do |index, content|
-					@value = Fieldvalue.find_or_create_by_person_id_and_field_id(@person.id, index.to_i)
-					@value.value = content.to_s
-					@value.save
-				end
+        	params[:field].each do |index, content|
+	   				@value = Fieldvalue.find_or_create_by_person_id_and_field_id(@person.id, index.to_i)
+	 	   			@value.value = content.to_s
+			   		@value.save
+  				end
+  		  end
       
         format.html { redirect_to(@person, :notice => 'Person was successfully updated.') }
         format.xml  { head :ok }

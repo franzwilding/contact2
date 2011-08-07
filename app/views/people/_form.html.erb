@@ -52,7 +52,7 @@
       <% ##### CITY STARTS ##### %>
       <label for="city">City: </label>
       <div class="findpeople_box">
-        <input id="city" type="text"  class="findpeople" name="city" value="" />
+        <input id="city" type="text" autocomplete="off"  class="findpeople" name="city" value="<%= @person.city.name if @person.city %>" />
         <p class="loading">Laden...</p>
       </div>
       
@@ -68,7 +68,8 @@
       			'loadingHTML'							: '<p class="loading">Laden...</p>', 
       			'createUrlFunction'				:	createUrl, 
       			'formatRowFunction'				: formatRow, 
-      			'finishedUpdateFunction'	: finishedUpdate
+      			'finishedUpdateFunction'	: finishedUpdate, 
+      			'updateOnScroll'          : false
       		});
       		
       		
@@ -99,6 +100,10 @@
         		$("#city_find_list").slideUp();
         		
         	});
+        	
+        	
+        	add_keyboard_support_for_list("input#city", "#city_find_list", function(time){ old_timestamp = time; });
+        	
         });
       	
       	
@@ -151,7 +156,7 @@
       <% ##### PROVINCE STARTS ##### %>
       <label for="province">Province: </label>
       <div class="findpeople_box">
-        <input id="province" type="text"  class="findpeople" name="province" value="" />
+        <input id="province" type="text" autocomplete="off"  class="findpeople" name="province" value="<%= @person.province.name if @person.province %>" />
         <p class="loading">Laden...</p>
       </div>
       
@@ -164,12 +169,12 @@
           
           //set my ajaxList-plugin to the ul
       		$("#province_find_list").fwAjaxList({
-      			'loadingHTML'							: '<p class="loading">Laden...</p>', 
+      			'loadingHTML'							: '<p class="loading">1Laden...</p>', 
       			'createUrlFunction'				:	p_createUrl, 
       			'formatRowFunction'				: p_formatRow, 
-      			'finishedUpdateFunction'	: p_finishedUpdate
+      			'finishedUpdateFunction'	: p_finishedUpdate,
+      			'updateOnScroll'          : false
       		});
-      		
       		
       		//update list on search-value-change
       		var old_timestamp1 = 0;
@@ -178,7 +183,7 @@
       	
       			//request nur jede 0.5 sec. wenn leute schnell tippen, killt das sonst den server
       			if(event.timeStamp - old_timestamp1 > 500) {
-      				
+      				console.log("keyup");
       				$(this).next().show();
       				
       				$("#province_find_list").fwAjaxList("update");
@@ -198,6 +203,10 @@
         		$("#province_find_list").slideUp();
         		
         	});
+        	
+        	add_keyboard_support_for_list("input#province", "#province_find_list", function(time){ old_timestamp1 = time; });
+          
+        	        	
         });
       	
       	

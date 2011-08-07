@@ -12,18 +12,18 @@
 		<br />
 		
 		<h3>Beschränken auf:</h3>
-		<ul>
+		<ul id="whereables">
 		  <% @whereable.each do |key, value| %>
 		  <li>
 		    <% if(value.kind_of?(Array)) %>
-		      <select>
+		      <select name="whereable[<%= key %>]">
 		          <option value="">All <%= key %></option>
 		        <% value.each do |item| %>
 		          <option value="<%= item %>"><%= item %></option>
 		        <% end %>
 		      </select>
 		    <% else %>
-		      <input type="checkbox" />
+		      <input type="checkbox" name="whereable[<%= key %>]" />
   			 <label><%= key %></label>
 		    <% end %>
 		  </li>
@@ -33,12 +33,16 @@
 		<br />
 		
 		<h3>Sortieren nach:</h3>
-		<ul>
+		<ul id="sortables">
 			<li>
-				<select>
+				<select name="sortable">
 				  <% @sortable.each do |item| %>
 				    <option value="<%= item %>"><%= item %></option>
 				  <% end %>
+				</select>
+				<select  name="asc">
+				  <option value="ASC">Aufsteigend (ASC)</option>
+				  <option value="DESC">Absteigend (DESC)</option>
 				</select>
 			</li>
 		</ul>
@@ -118,6 +122,8 @@
 			'finishedUpdateFunction'	: finishedUpdate
 		});
 		
+		$("ul.list").fwAjaxList("update");
+		
 		
 		//update list on search-value-change
 		
@@ -135,6 +141,10 @@
 			}
 		});
 		
+		$("#sortables select, #sortables input, #whereables select, #whereables input").change(function(){
+		  $("ul.list").fwAjaxList("update");
+		});
+		
 	});
 	
 	
@@ -147,15 +157,43 @@
 	 */
 	var createUrl = function(init) {
 		
+		//limit
 		limit = 20;
 		
+		//offset
 		if(init) offset = 0;
 		else offset = $("ul.list > li").size();
 		
+		//query
 		query = $("form.search input.search").val();
 		if(query == init_search_input) query		= "";
 		
-		url = "/people.json?limit= " + limit + " &offset=" + offset + "&query=" + query;
+
+		//sortable
+		sortstring = "";
+		$("#sortables select").each(function(){		  
+		  sortstring += "&" + $(this).attr("name") + "=" + $(this).val();
+		});
+		
+		//whereable
+		wherestring = "";
+		$("#whereables select").each(function(){
+		  wherestring += "&" + $(this).attr("name") + "=" + $(this).val();
+		});
+		
+		$("#whereables input").each(function(){
+		  
+		  value = "";
+		  
+		  if($(this).attr("type") == "checkbox")
+		    value = $(this).attr("checked");
+		  else
+		    value = $(this).val();
+		  
+		  if(value) wherestring += "&" + $(this).attr("name") + "=" + value;
+		});
+		
+		url = "/people.json?limit= " + limit + " &offset=" + offset + "&query=" + query + sortstring + wherestring;
 		
 		return url;
 	}

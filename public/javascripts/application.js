@@ -73,6 +73,95 @@ $("a.tooltip").each(function(){
 }*/
 
 
+
+
+
+function add_keyboard_support_for_list(input, find_list, callback) {
+  
+  var cur_obj = this;
+  
+  //when i press down inside the search-input
+  $(input).bind('keydown', 'down',function (event){
+    
+    //wenn die find_list nicht angezeigt wird, dann müssen wir die suche updaten
+    if(!$(find_list).is(":visible")) {
+      $(find_list).fwAjaxList("update");
+    }
+    
+    else {
+    
+      //get the current item, if it is activated
+      cur_active = $(find_list).find("li.hover")[0];
+      
+      //remove all active-classes
+      $(find_list).find("li").each(function(){
+        $(this).removeClass("hover");
+      });
+    
+      //activate next item
+      if(!cur_active)
+        $(find_list).find("li:first").addClass("hover");
+      else if($(cur_active).next()[0])
+        $(cur_active).next().addClass("hover");
+      else
+        $(cur_active).addClass("hover");
+    
+    }
+    
+    callback.call(cur_obj, event.timeStamp);
+    return false; 
+  });
+
+  
+  
+  //when i press up inside the search-input
+  $(input).bind('keydown', 'up',function (event){
+    
+    //get the current item, if it is activated
+    cur_active = $(find_list).find("li.hover")[0];
+    
+    //remove all active-classes
+    $(find_list).find("li").each(function(){
+      $(this).removeClass("hover");
+    });
+    
+    //activate next item
+    if(cur_active && $(cur_active).prev()[0])
+      $(cur_active).prev().addClass("hover");
+    else
+      $(cur_active).addClass("hover");
+    
+    callback.call(cur_obj, event.timeStamp);
+    return false; 
+  });
+  
+  
+  $(input).bind('keydown', 'return',function (event){
+    
+    //get the current item, if it is activated
+    cur_active = $(find_list).find("li.hover")[0];
+    
+    if(cur_active) {
+    $(this).val($(cur_active).find("h3 a").text());
+    $(this).removeClass("hover");
+    }
+    
+    
+    $(find_list).slideUp();
+    callback.call(cur_obj, event.timeStamp);
+    return false; 
+  });
+
+}
+
+
+
+
+
+
+
+
+
 /***********************/
 /* FORTMAT PERSON LIST */
 /***********************/
@@ -136,7 +225,11 @@ function format_interaction_list(current_person, small) {
 	
 	html_string += '<li name="' + current_person.id + '">';
 
-	if(current_person.avatar != null)
+  if(current_person.avatar != null)
+    
+    if(current_person.avatar == "") current_person.avatar = "default.png";	   
+	   
+	   
 		html_string += '<a class="showdetails" href="javascript:;"><img src="/avatars/' + current_person.avatar + '" alt="' + current_person.firstname.substr(0, 20) + ' ' + current_person.surname.substr(0, 20) + '" /></a>';
 	html_string += '	<h3><a class="showdetails" href="javascript:;">' + current_person.firstname.substr(0, 20) + ' ' + current_person.surname.substr(0, 20) + '</a></h3>';
 	
@@ -173,12 +266,19 @@ function format_details(obj, fieldgroups) {
 	
 	console.log(obj);
 	console.log(fieldgroups);
+
+
+	city       = obj.city.name;
+	province   = obj.province.name;
+  street     = obj.address.street;
+  PLZ        = obj.address.PLZ;
+  number     = obj.address.number;
 	
 	var html_string = '';
 	html_string += '<div class="detailinfos">';
 	html_string += '<h4 class="address">Adresse</h4>';
 	html_string += '<p>';
-	html_string += 'Roßauer Lände 45/6<br />1090 Wien, Wien<br />Österreich';
+	html_string += street + ' ' + number + '<br />' + PLZ + ' ' + city + ', ' + province;
 	html_string += '</p>';
 	html_string += '</div>';
 	
