@@ -1,23 +1,138 @@
-<h1>Listing lists</h1>
+<h1 class="h">Listing lists</h1>
 
-<table>
-  <tr>
-    <th>Title</th>
-    <th></th>
-    <th></th>
-    <th></th>
-  </tr>
+<form class="search">
+	<fieldset>
+		<legend>Suchen</legend>
+		
+		<div class="search_box">
+			<input class="search" type="text" value="Suchbegriff eingeben" />
+			<p class="loading">Laden...</p>
+		</div>
+		<button>Suchen</button>
+		<br />
+	</fieldset>
+</form><!-- form.search ends here -->
 
-<% @lists.each do |list| %>
-  <tr>
-    <td><%= list.title %></td>
-    <td><%= link_to 'Show', list %></td>
-    <td><%= link_to 'Edit', edit_list_path(list) %></td>
-    <td><%= link_to 'Destroy', list, :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
+<div class="add button">
+	<a href="<%= new_list_path %>">Eine neue Liste erstellen</a>
+</div>
 
-<br />
+<hr />
 
-<%= link_to 'New List', new_list_path %>
+<ul class="list">
+	<li class="loading">
+		<p class="loading">Laden...</p>
+	</li>
+</ul>
+
+<script type="text/javascript">
+	
+	var init_search_input;
+	
+	$(document).ready(function(){
+		
+				
+		//set initial search-input value
+		init_search_input = $("form.search input.search").val();		
+		
+		//load details on current user
+		$("a.showdetails").live("click", function(){
+			$(this).removeClass("showdetails");
+			$(this).addClass("hidedetails");
+
+			var details = $(this).parent().parent().find("div.details");
+			details.slideDown("fast");
+			
+			//wenn dieser content noch nicht geladen wurde
+			if(details.html() == "") {
+				
+				details.html('<p class="loading">Laden...</a></p>');
+				
+				$.get("lists/" + $(this).parent().parent().attr("name") + '.json', function(data){			
+					details.html(format_list_details(data["list"]));
+				});
+				
+			}	
+		});
+		
+		//set my ajaxList-plugin to the ul
+		$("ul.list").fwAjaxList({
+			'loadingHTML'							: '<p class="loading">Laden...</p>', 
+			'createUrlFunction'				:	createUrl, 
+			'formatRowFunction'				: formatRow, 
+			'finishedUpdateFunction'	: finishedUpdate
+		});
+		
+		$("ul.list").fwAjaxList("update");
+		
+		
+		//update list on search-value-change
+		
+		var old_timestamp = 0;
+		
+		$("input.search").keyup(function(event){
+	
+			//request nur jede 0.5 sec. wenn leute schnell tippen, killt das sonst den server
+			if(event.timeStamp - old_timestamp > 500) {
+				
+				$(this).next().show();
+				
+				$("ul.list").fwAjaxList("update");
+				old_timestamp = event.timeStamp;
+			}
+		});
+		
+		$("#sortables select, #sortables input, #whereables select, #whereables input").change(function(){
+		  $("ul.list").fwAjaxList("update");
+		});
+		
+	});
+	
+	
+	/**
+	 * createUrl()
+	 *
+	 * this function returns the url for the ajax-request.
+	 * you should put the query-logic in here and have to 
+	 * return the url as string
+	 */
+	var createUrl = function(init) {
+		
+		//limit
+		limit = 20;
+		
+		//offset
+		if(init) offset = 0;
+		else offset = $("ul.list > li").size();
+		
+		//query
+		query = $("form.search input.search").val();
+		if(query == init_search_input) query		= "";
+		
+		url = "/lists.json?limit= " + limit + " &offset=" + offset + "&query=" + query;
+		
+		return url;
+	}
+	
+	/**
+	 * formatRow(data)
+	 * 
+	 * this functions has the data of a response-row-object as argument
+	 * you have to return the final html-code for this row, inclusive li-tags
+	 */
+	var formatRow = function(data) {
+		return format_lists_list(data["list"]);
+	}
+	
+	
+	/**
+	 * finishedUpdate
+	 *
+	 * this callback is called, whenever an update finished
+	 * you can use this function to hide loading-animation or so
+	 */
+	var finishedUpdate = function() {
+		$("input.search").next().fadeOut();
+	}
+	
+</script>

@@ -1,0 +1,6 @@
+<% if notice || alert %>
+  <div class="messages">
+    <% if notice %><p class="notice"><%= notice %><%= params[:notice] %></p><% end %>
+    <% if alert %><p class="alert"><%= alert %><%= params[:alert] %></p><% end %>
+  </div>
+<% end %>

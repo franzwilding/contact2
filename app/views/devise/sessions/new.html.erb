@@ -1,0 +1,32 @@
+<div id="login_form">
+  <h1 id="login_logo">Login</h1>
+  <%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+  	<fieldset>
+  		<legend>Einloggen</legend>
+  		
+  		<div class="popupbox">
+    		<div class="popup"><%= f.label :email, "Gib deine Email-adresse ein" %></div>
+        <%= f.email_field :email %>
+      </div>
+      
+      <div class="popupbox">
+        <div class="popup"><%= f.label :password, "Dein Passwort" %></div>
+        <%= f.password_field :password %>
+      </div>
+      	
+  		<%= f.submit "Sign in" %>
+  		
+  		<!--label for="login_email">Emailadresse: </label>
+  		<input id="login_email" value="Deine Emailadresse" type="text" name="email" />
+  		
+  		<label for="login_password">Passwort: </label>
+  		<input id="login_password" value="Passwort" type="password" name="password" />
+  		
+  		<button>Einloggen</button-->
+  	</fieldset>
+  <% end %>
+  
+  <div class="links">
+    <%= render :partial => "devise/shared/links" %>
+  </div>
+</div>

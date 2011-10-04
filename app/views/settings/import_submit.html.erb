@@ -1,0 +1,72 @@
+<h1>Excel-Import</h1>
+<blockquote>Bitte sage, welche der Felder in der Excel-Datei zu welchen Feldern in der Datenbank passen.</blockquote>
+
+<%= form_tag({:controller => :settings, :action => :import_save}) do %>
+  
+  <input type="hidden" name="file" value="<%= @file %>" />
+  
+  <fieldset style="padding-right:20px;">
+    <legend>Stammdaten</legend>
+    
+    <%= render :partial => 'import_match_select', :locals => {:rows => @first_row, :field => {:name => 'Vorname', :key => 'match[firstname]'}} %>
+    <%= render :partial => 'import_match_select', :locals => {:rows => @first_row, :field => {:name => 'Nachname', :key => 'match[surname]'}} %>
+    <%= render :partial => 'import_match_select', :locals => {:rows => @first_row, :field => {:name => 'Email', :key => 'match[email]'}} %>
+    <%= render :partial => 'import_match_select', :locals => {:rows => @first_row, :field => {:name => 'Phone', :key => 'match[phone]'}} %>
+  </fieldset>
+
+  
+  <fieldset style="padding-right:20px;">
+    <legend>Adresse</legend>
+    
+    <%= render :partial => 'import_match_select', :locals => {:rows => @first_row, :field => {:name => 'Straße', :key => 'address_attributes[street]'}} %>
+    <%= render :partial => 'import_match_select', :locals => {:rows => @first_row, :field => {:name => 'Number', :key => 'address_attributes[number]'}} %>
+    <%= render :partial => 'import_match_select', :locals => {:rows => @first_row, :field => {:name => 'PLZ', :key => 'address_attributes[plz]'}} %>
+    <%= render :partial => 'import_match_select', :locals => {:rows => @first_row, :field => {:name => 'City', :key => 'address_attributes[city]'}} %>
+    <%= render :partial => 'import_match_select', :locals => {:rows => @first_row, :field => {:name => 'Province', :key => 'address_attributes[province]'}} %>
+  </fieldset>
+  
+  <fieldset style="padding-right:20px;">
+		<legend>Web 2.0</legend>
+		
+		<%= render :partial => 'import_match_select', :locals => {:rows => @first_row, :field => {:name => 'Facebook', :key => 'match[facebook]'}} %>
+		<%= render :partial => 'import_match_select', :locals => {:rows => @first_row, :field => {:name => 'Twitter', :key => 'match[twitter]'}} %>
+		<%= render :partial => 'import_match_select', :locals => {:rows => @first_row, :field => {:name => 'Website', :key => 'match[website]'}} %>
+	</fieldset>
+	
+	<% @fields.each do |group| %>
+		<fieldset style="padding-right:20px;">
+			<legend><%= group.name %></legend>
+			
+			<% group.fields.each do |field| %>				
+				<%= render :partial => 'import_match_select', :locals => {:rows => @first_row, :field => {:name => field.label, :key => 'field[' + field.id.to_s + ']'}} %>
+      <% end %>
+		</fieldset>		
+	<% end %>
+  
+  <hr />
+  <%= submit_tag 'Importieren' %>
+  
+<% end %>
+
+<hr />
+
+<blockquote>Hier siehst du Testdaten aus deiner Datei.</blockquote>
+
+<table>
+<tr>
+<% @first_row.each do |fr| %>
+  <th><%= fr %></th>
+<% end %>
+</tr>
+
+<% @sheet.each_with_index 1 do |row, index| %>
+  
+  <% break if index > 10 %>
+  
+  <tr>
+  <% row.each do |r| %>
+    <td><%= r %></td>
+  <% end %>
+  </tr>
+<% end %>
+</table>

@@ -1,0 +1,8 @@
+<h1>Excel-Import</h1>
+<blockquote>Du kannst eine Excel-Datei mit Personen hochladen, und importieren.</blockquote>
+
+<%= form_tag({:controller => :settings, :action => :import_submit}, :multipart => true) do %>
+  <%= file_field_tag 'excelfile' %>
+  <hr />
+  <%= submit_tag 'Hochladen' %>
+<% end %>

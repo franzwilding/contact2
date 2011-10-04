@@ -40,6 +40,7 @@ ul.list img, ol.list img, ul.input_dropdown img, ul.selected_box img {
 ul.list p, ol.list p {
 	float: left;
 	margin-top: 5px;
+	margin-bottom: 0;
 	}
 	
 ul.list h3, ol.list h3 {
@@ -82,6 +83,7 @@ ul.list span.phone, ol.list span.phone, ul.list a.email, ol.list a.email {
 ul.list a.email, ol.list a.email {
 	background: #2381B6 url(img/email_bg.png) repeat-x left top;
 	color: white;
+	text-shadow: none;
 	}	
 
 ul.list a.edit, ol.list a.edit {
@@ -188,6 +190,39 @@ div.detailinfos p {
 	padding: 6px;
 	margin: 0;
 	}	
+
+div.detailinfos ul {
+  margin: 0 10px;
+  }
+
+div.detailinfos ul li {
+  border-bottom: 1px dotted #ccc;
+  }
+
+div.detailinfos ul li:last-child {
+  border:none;
+  }
+
+div.detailinfos ul li a.delete, ul.peoplefields a.delete {
+  text-indent: -99999999px;
+  width: 12px;
+  height: 12px;
+  background: url(img/button_delete_small.png) no-repeat left top;
+  padding: 0;
+  margin: 3px 4px 0 4px;
+  }
+
+ul.peoplefields a.delete {
+  margin-right: 14px;
+  margin-left: 10px;
+  }
+
+div.detailinfos ul li a.delete:hover, ul.peoplefields a.delete:hover {
+  background: url(img/button_delete_small.png) no-repeat left 100%;
+  }
+
+
+
 	
 	
 	

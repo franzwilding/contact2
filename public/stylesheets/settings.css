@@ -47,7 +47,7 @@ ul.peoplefields {
 	}
 
 ul.peoplefields li {
-	width: 99%;
+	width: 100%;
 	height: 24px;
 	background: url(img/settings_field.png) repeat-x left top;
 	box-shadow: 0 0 1px #737373;
@@ -57,9 +57,13 @@ ul.peoplefields li {
 	text-shadow: 1px 1px white;
 	text-transform: uppercase;
 	font-size: 14px;
-	padding:6px 0 0 1%;
+	padding:6px 0 0 0;
 	margin: 4px 0;
 	}
+
+ul.peoplefields li span {
+  display: block;
+  }
 	
 ul.peoplefields li:hover {
 	color: #1A87BB;

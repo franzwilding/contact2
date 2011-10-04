@@ -1,16 +1,8 @@
+<% @person.address = Address.new if @person.address.nil? %>
 
-<%= form_for(@person) do |f| %>
-  <% if @person.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@person.errors.count, "error") %> prohibited this person from being saved:</h2>
-
-      <ul>
-      <% @person.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+<%= form_for(@person, :html => {:multipart => true}) do |f| %>
+  
+  <%= render :partial => 'shared/form_error', :locals => {:errors => @person.errors} %>
 	
 	<fieldset>
 		
@@ -29,8 +21,8 @@
 	  <%= f.telephone_field :phone %>
 	  
 	  <%= f.label :avatar %>
-	  <%= f.file_field :avatar %>
-
+	  <input id="person_avatar" name="person[avatar]" type="file" size="17" />
+	  	  
 	</fieldset>
 	
 	<fieldset>
@@ -101,6 +93,9 @@
         		
         	});
         	
+        	$("input#city").live("blur", function(){
+            $("input#city").next().val($("input#city").val());
+        	});
         	
         	add_keyboard_support_for_list("input#city", "#city_find_list", function(time){ old_timestamp = time; });
         	
@@ -204,6 +199,10 @@
         		
         	});
         	
+        	$("input#province").live("blur", function(){
+            $("input#province").next().val($("input#province").val());
+        	});
+        	
         	add_keyboard_support_for_list("input#province", "#province_find_list", function(time){ old_timestamp1 = time; });
           
         	        	
@@ -305,11 +304,43 @@
 			<% end %>
 			
 			
-		</fieldset>
+		</fieldset>		
 	<% end %>
-
-	
+  
+  <fieldset class="addpassword">  	 
+    <legend>Soll sich dieser User einlochen können?</legend>
+    <div class="content">
+     <%= f.label :password %>
+     <%= f.password_field :password %>
+    
+     <%= f.label :password_confirmation %>
+     <%= f.password_field :password_confirmation %>
+    </div>
+	</fieldset>
+  
+  <script type="text/javascript">
+    $(document).ready(function($) {
+      var height = $("fieldset.addpassword .content").height();
+      
+      $("fieldset.addpassword .content").css("height", 0);
+      $("fieldset.addpassword .content").css("overflow", "hidden");
+      $("fieldset.addpassword legend").css("cursor", "pointer");
+      
+      $("fieldset.addpassword legend").click(function(){
+        if($(this).next().height() == 0) {
+          $(this).next().animate({
+            height: height+10
+          }, 400);
+        } else {
+          $(this).next().animate({
+            height: 0
+          }, 400);
+        }
+      });
+    });
+	</script>
 	<hr />
   
   <%= f.submit "Speichern" %>
+  <%= link_to 'Löschen', @person, :confirm => 'Soll dieser User wirklich unwiderruflich gelöscht werden?', :method => :delete, :class => 'delete' %></td>
 <% end %>

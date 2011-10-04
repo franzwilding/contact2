@@ -1,4 +1,5 @@
-class PublicController < ApplicationController
+class PublicController < ActionController::Base
+protect_from_forgery
 
 def login
 	

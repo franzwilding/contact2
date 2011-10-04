@@ -1,7 +1,14 @@
 Contact2::Application.routes.draw do
 
-  resources :addresses
+post 'people' => 'people#create'
+match 'file' => 'application#file'
+match 'lists/export_as_list' => 'lists#export_as_list'
+match 'lists/export' => 'lists#export'
+post 'sort' => 'fields#sort'
 
+devise_for :people
+
+resources :addresses
 resources :provinces
 resources :cities
 resources :fields

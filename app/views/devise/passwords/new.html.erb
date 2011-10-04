@@ -1,0 +1,21 @@
+<div id="login_form" class="forgot_password">
+  <h1 id="login_logo">Forgot your password?</h1>
+  <%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f| %>
+  	<fieldset>
+  		<legend>Einloggen</legend>
+  		
+  		<%= devise_error_messages! %>
+      
+      <div class="popupbox">
+        <div class="popup" style="margin-top:-20px"><%= f.label :email, 'Gib deine Email-Adresse ein, um dein Passwort zurückzusetzen.' %></div>
+        <%= f.email_field :email %>
+      </div>
+      <%= f.submit "Senden" %>
+      
+  	</fieldset>
+  <% end %>
+  
+  <div class="links">
+    <%= render :partial => "devise/shared/links" %>
+  </div>
+</div>

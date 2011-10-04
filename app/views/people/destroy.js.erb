@@ -1,0 +1,8 @@
+$(document).ready(function($) {
+  
+  l = $('ul.list li[name="<%= @l_id %>"] .detailinfos ul li[name="<%= @p_id %>"]');
+  l.fadeOut();
+  l.remove();
+  
+  
+});

@@ -1,0 +1,7 @@
+<label style="float:left; width:150px; text-align:right;"><%= field[:name] %>: </label>
+<select style="float:left; margin: 15px 0 0 0;" name="<%= field[:key] %>">
+  <option value="-1">Keine Zuordnung</option>
+  <% rows.each_with_index do |fr, index| %>
+    <option value="<%= index %>"<%= ' selected="selected"' if field[:key].capitalize == fr.capitalize || field[:name].capitalize == fr.capitalize %>><%= fr %></option>
+  <% end %>
+</select><br />

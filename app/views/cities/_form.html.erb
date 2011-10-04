@@ -1,15 +1,6 @@
 <%= form_for(@city) do |f| %>
-  <% if @city.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@city.errors.count, "error") %> prohibited this city from being saved:</h2>
-
-      <ul>
-      <% @city.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  
+  <%= render :partial => 'shared/form_error', :locals => {:errors => @city.errors} %>
 
   <div class="field">
     <%= f.label :name %><br />

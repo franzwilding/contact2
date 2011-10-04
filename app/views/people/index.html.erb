@@ -1,3 +1,5 @@
+<%= render :partial => 'shared/messages' %>
+
 <h1 class="h">Listing people</h1>
 
 <form class="search">
@@ -10,43 +12,6 @@
 		</div>
 		<button>Suchen</button>
 		<br />
-		
-		<h3>Beschränken auf:</h3>
-		<ul id="whereables">
-		  <% @whereable.each do |key, value| %>
-		  <li>
-		    <% if(value.kind_of?(Array)) %>
-		      <select name="whereable[<%= key %>]">
-		          <option value="">All <%= key %></option>
-		        <% value.each do |item| %>
-		          <option value="<%= item %>"><%= item %></option>
-		        <% end %>
-		      </select>
-		    <% else %>
-		      <input type="checkbox" name="whereable[<%= key %>]" />
-  			 <label><%= key %></label>
-		    <% end %>
-		  </li>
-		  <% end %>
-		</ul>
-		
-		<br />
-		
-		<h3>Sortieren nach:</h3>
-		<ul id="sortables">
-			<li>
-				<select name="sortable">
-				  <% @sortable.each do |item| %>
-				    <option value="<%= item %>"><%= item %></option>
-				  <% end %>
-				</select>
-				<select  name="asc">
-				  <option value="ASC">Aufsteigend (ASC)</option>
-				  <option value="DESC">Absteigend (DESC)</option>
-				</select>
-			</li>
-		</ul>
-		
 	</fieldset>
 </form><!-- form.search ends here -->
 
@@ -55,14 +20,7 @@
 </div>
 
 <div class="export button">
-	<a href="#" class="tooltip">Diese Suche verwenden</a>
-	<div class="h">
-		<ul class="tooltip_menu">
-			<li><a href="">Diese Auswahl als Liste speichern</a></li>
-			<li><a href="">Diese Auswahl als Excel-Datei herunterladen</a></li>
-			<li><a href="">Diese Auswahl als CSV-Datei herunterladen</a></li>
-		</ul>
-	</div>
+  <%= link_to 'Diese Suche als Liste speichern', new_list_path, :id => 'export_as_list' %>
 </div>
 
 <hr />
@@ -76,13 +34,13 @@
 <script type="text/javascript">
 	
 	var init_search_input;
-	
+
 	$(document).ready(function(){
-		
 		
 		//set fieldgroups as variable
 		var fieldgroups = $.parseJSON('<%= raw @fieldgroups.to_json(:include => :fields) %>');
 		
+		update_list_create_links("");
 		
 		//set initial search-input value
 		init_search_input = $("form.search input.search").val();		
@@ -132,11 +90,12 @@
 		$("input.search").keyup(function(event){
 	
 			//request nur jede 0.5 sec. wenn leute schnell tippen, killt das sonst den server
-			if(event.timeStamp - old_timestamp > 500) {
+			if(event.timeStamp - old_timestamp > 300) {
 				
 				$(this).next().show();
 				
 				$("ul.list").fwAjaxList("update");
+				update_list_create_links($(this).val());
 				old_timestamp = event.timeStamp;
 			}
 		});
@@ -147,6 +106,10 @@
 		
 	});
 	
+	function update_list_create_links(query) {
+    hrefs = $("#export_as_list").attr("href").split("?query=");
+    $("#export_as_list").attr("href", hrefs[0] + "?query=" + query);
+	}
 	
 	/**
 	 * createUrl()

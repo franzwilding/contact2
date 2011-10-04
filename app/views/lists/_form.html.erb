@@ -1,21 +1,154 @@
+
 <%= form_for(@list) do |f| %>
-  <% if @list.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@list.errors.count, "error") %> prohibited this list from being saved:</h2>
-
-      <ul>
-      <% @list.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :title %><br />
+  
+  <%= render :partial => 'shared/form_error', :locals => {:errors => @list.errors} %>
+  
+  <fieldset>
+		<legend>Stammdaten</legend>
+    <%= f.label :title %>
     <%= f.text_field :title %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+    
+    <input type="checkbox" id="list_dynamic_input" name="dynamic" />
+    <label for="list_dynamic_input">Als dynamische Liste speichern?</label>
+    
+  </fieldset>
+  
+  <fieldset id="findpeople_fieldset1">
+  	<legend>Personen dieser Liste</legend>
+  	<label for="findpeople1">Nach Personen suchen: </label>
+  	<input id="findpeople1" type="text"  class="findpeople" name="people" autocomplete="off" value="" />
+  	<ul id="findpeople_list1" class="input_dropdown">
+  	</ul>
+  	
+  	<ul id="findpeople_selected1" class="selected_box">
+  	</ul>
+  </fieldset>
+  
+  <fieldset id="people_query">
+    <legend>Dynamische Liste</legend>
+    <p>Bei einer dynamischen Liste, werden die Mitglieder dieser Liste nicht fix gespeichert, sondern entsprechen immer deinem definierten Suchergebnis.</p>
+    <%= f.label :query %>
+    <%= f.text_field :query %>
+  </fieldset>
+  
+  <hr />
+  <%= f.submit "Speichern" %>
+  <%= link_to 'Löschen', @list, :confirm => 'Soll diese Liste wirklich unwiderruflich gelöscht werden?', :method => :delete, :class => 'delete' %></td>
 <% end %>
+
+<script type="text/javascript">
+	  
+    $(document).ready(function($) {
+      
+      <% @list.people.each do |p| %>
+        add(<%= p.id %>, "<%= !p.avatar.nil? ? '/file?path=avatars/' + p.avatar : "/file?path=avatars/default.png" %>", "<%= p.firstname %> <%= p.surname %>");
+      <% end %>
+      
+      $("#people_query").hide();
+      input_query_name = $("input#list_query").attr("name");
+      $("input#list_query").attr("name", "");
+      
+      $("input#list_dynamic_input").change(function(){
+        
+        if($(this).attr('checked') == "checked") {
+          $("#people_query").fadeIn();
+          $("input#list_query").attr("name", input_query_name);
+          $("#findpeople_fieldset1").hide();
+        } else {
+          $("#people_query").hide();
+          $("input#list_query").attr("name", "");
+          $("#findpeople_fieldset1").fadeIn();
+        }
+        
+        
+      });
+      
+    });
+    
+	  //callback von findpeople definiert in main.js. name ist dynamisch: output_#id von input
+	  function output_findpeople1(people) {
+	  		
+	  	var insert_html = "";
+	  		
+			$.each(people, function(index, value) {
+				
+				cur_row = format_interaction_list(value["person"], true);
+				
+				//wenn wir schon eine person in der box haben, mŸssen wir dieses element auf aktiv schalten
+				if($("#findpeople_fieldset1 input[name=people]").val().indexOf(";" + value["person"].id + ";") >= 0) {
+					cur_row = cur_row.replace('<li name="' + value["person"].id + '">', '<li name="' + value["person"].id + '" class="active">');
+				}
+				
+				insert_html += cur_row;
+
+			});
+			
+			$("#findpeople_list1").html(insert_html);
+			$("#findpeople_list1").slideDown();
+			
+		}
+		
+		function remove(id) {
+		
+			//remove active class in selectmode
+			$("#findpeople_list1 li[name=" + id + "]").removeClass("active");
+			
+			//remove element from box
+			$("#findpeople_selected1 li[name=" + id + "]").fadeOut("fast", function(){
+				$("#findpeople_selected1 li[name=" + id + "]").remove();
+			});
+			
+			
+			cur_val = $("#findpeople_fieldset1 input[name=people]").val();
+			$("#findpeople_fieldset1 input[name=people]").val(cur_val.replace(';' + id + ';', ''));	
+		}
+		
+		function add(id, img, name) {
+			
+			//add active class in selectmode
+			$("#findpeople_list1 li[name=" + id + "]").addClass("active");
+			
+			//add element in box
+			$("#findpeople_selected1").append('<li name="' + id + '" style="display:none;"><img src="' + img + '" alt=" ' + name + ' " /> ' + name + '</li>');
+			$("#findpeople_selected1 li[name=" + id + "]").fadeIn();
+			
+			cur_val = $("#findpeople_fieldset1 input[name=people]").val();
+			$("#findpeople_fieldset1 input[name=people]").val(cur_val + ';' + id + ';');
+		}
+		
+		$(document).ready(function(){
+			
+			//wenn wir das fieldset verlassen, schlie§t sich die dropdownbox
+			$("#findpeople_fieldset1").mouseleave(function(){
+				$("#findpeople_list1").slideUp();
+			});
+			
+			
+			$("#findpeople_selected1 li").live("click", function(){
+				remove($(this).attr("name"));
+			});
+			
+			//wenn wir eine person auswŠhlen, wird diese der selectedpeople_box hizugefŸgt
+			$("#findpeople_list1 li").live("click", function(){
+				
+				id = $(this).attr("name");
+				
+				//wenn wir schon aktiv sind, dann entfernen wir das bild. ansonsten fŸgen wir es ein
+				if($(this).hasClass("active")) {
+					remove(id);
+					
+				}
+				
+				//wir fŸgen das ausgewŠhlte bild ein
+				else {
+					img = $(this).find("img").attr("src");
+					name = $(this).find("h3").text();
+					
+					add(id, img, name);
+				}
+				
+			});
+			
+		});
+		
+	</script>

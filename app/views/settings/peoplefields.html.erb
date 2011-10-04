@@ -1,12 +1,45 @@
+<script type="text/javascript">
+//<![CDATA[
+
+jQuery(document).ready(function(){
+  jQuery('ul.peoplefields').sortable({
+    axis: 'y',
+    dropOnEmpty: false,
+    handle: 'span',
+    cursor: 'move',
+    items: 'li',
+    opacity: 0.4,
+    scroll: true,
+    update: function(){
+    jQuery.ajax({
+      type: 'post',
+      data: jQuery('ul.peoplefields').sortable('serialize'),
+      dataType: 'script',
+      complete: function(request){
+        jQuery('ul.peoplefields li').effect('highlight');
+      },
+      url: '/fields/sort'})
+    }
+  });
+});
+
+//]]>
+</script>
+
+<%= render :partial => 'shared/messages' %>
+
 <h1>Personenfelder</h1>
-<blockquote>Personenfeld sind spezielle Felder, die über die regulären Stammdaten hinausgehen. Du kannst hier neue Felder in Gruppen sortiert anlegen, um mehr Daten zu einer Person (zB.: ob sie vegetarisch isst) abspeichern zu können.</blockquote>
+<blockquote>Personenfeld sind spezielle Felder, die über die regulären Stammdaten hinausgehen. Du kannst hier neue Felder in Gruppen sortiert anlegen, um mehr Daten zu einer Person (zB.: oadd!ie vegetarisch isst) abspeichern zu können.</blockquote>
 
 <% @fieldgroups.each do |group| %>
 <h2><%= group.name %></h2>
 
 <ul class="peoplefields">
 		<% group.fields.each do |field| %>
-			<li><%= field.label %> (<%= field.itype %>)<%= ", verpflichtend" if field.required %></li>
+			<li id="position_<%= field.id %>">
+        <%= link_to 'Löschen', field, :method => :delete, :class => "delete" %>
+        <span><%= field.label %> (<%= field.itype %>)<%= ", verpflichtend" if field.required %></span>
+			</li>
 		<% end %>
 </ul><!-- peoplefields -->
 <div class="add button">

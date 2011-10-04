@@ -2,8 +2,10 @@
 <html>
 <head>
 <title>Contact2</title>
-<%= stylesheet_link_tag :all %>
-<%= javascript_include_tag :all %>
+<%= stylesheet_link_tag :all, 'fancybox/jquery.fancybox-1.3.4.css' %>
+<%= stylesheet_link_tag '/javascripts/fancybox/jquery.fancybox-1.3.4.css' %>
+<%= javascript_include_tag :defaults, :all %>
+<%= javascript_include_tag '/javascripts/fancybox/jquery.mousewheel-3.0.4.pack.js', '/javascripts/fancybox/jquery.fancybox-1.3.4.pack.js' %>
 <%= csrf_meta_tag %>
 </head>
 <body>
@@ -21,29 +23,32 @@
 			<%
 				@menu = []
 				@menu << {:name => "people", :title => "Personen"}
-				@menu << {:name => "interactions", :title => "Interactions"}
+				#@menu << {:name => "interactions", :title => "Interactions"}
 				@menu << {:name => "lists", :title => "Listen"}
 				@menu << {:name => "settings", :title => "Einstellungen"}
 				
 			%>
 			
-			<ul id="menu">
-				<% @menu.each do |m| %>
-					<li<% if current_controller?(m[:name]) %> class="active"<% end %>>
-						<span>
-							<a href="<%= url_for(:controller => m[:name]) %>" style="background-image:url(/stylesheets/icons/16_<%= m[:name] %>.png);"><%= m[:title] %></a>
-						</span>
-					</li>					
-				<% end %>
-			</ul><!-- menu ends here -->
-			
-			<!-- USERMENU -->
-			<p id="usermenu">
-				<img src="/img.gif" alt="" title="" />
-				Franz Wilding <br />
-				<strong><a href="<%= url_for(:controller => 'public', :action => 'logout') %>" title="Ausloggen">Logout</a></strong>
-				<a id="user_settings" title="Meine User-Einstellungen" href="<%= url_for(:controller => 'settings', :action => 'profile') %>">Settings</a>
-			</p><!-- usermenu ends here -->
+			<% if current_person %>
+  			<ul id="menu">
+  				<% @menu.each do |m| %>
+  					<li<% if current_controller?(m[:name]) %> class="active"<% end %>>
+  						<span>
+  							<a href="<%= url_for(:controller => m[:name]) %>" style="background-image:url(/stylesheets/icons/16_<%= m[:name] %>.png);"><%= m[:title] %></a>
+  						</span>
+  					</li>					
+  				<% end %>
+  			</ul><!-- menu ends here -->
+    		
+  			
+  			<!-- USERMENU -->
+  			<p id="usermenu">
+  				<img src="/file?path=avatars/<%= current_person.avatar.nil? ? 'default.png' : current_person.avatar %>" alt="" title="" />
+  				<%= current_person.firstname %> <%= current_person.surname %> <br />
+  				<strong><%= link_to('Logout', destroy_person_session_path, :method => :delete) %></strong>
+  				<a id="user_settings" title="Meine User-Einstellungen" href="<%= edit_person_path(current_person) %>">Settings</a>
+  			</p><!-- usermenu ends here -->
+			<% end %>
 			
 		</div><!-- header ends here -->
 		

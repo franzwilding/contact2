@@ -34,3 +34,8 @@ gem 'scoped_search'
 # group :development, :test do
 #   gem 'webrat'
 # end
+
+gem 'paperclip'
+gem 'devise'
+gem 'spreadsheet'
+gem 'acts_as_list'

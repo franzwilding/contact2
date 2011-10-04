@@ -1,0 +1,16 @@
+<h1>Excel-Import</h1>
+<blockquote>Der Import ist abgeschlossen.</blockquote>
+
+<hr />
+<h2><strong class="color"><%= @success_elements.count %></strong> Personen wurden importiert.</h2>
+<h2><strong class="color"><%= @error_elements.count %></strong> Personen konntent nicht importiert werden. Anbei findest du die Fehlermeldungen:</h2>
+
+<hr />
+
+<% @error_elements.each do |e| %>
+<p>
+  <% e.each do |key, value| %>
+    <strong><%= key %>: </strong><%= value %>, 
+  <% end %>
+</p>
+<% end %>
