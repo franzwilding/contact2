@@ -206,7 +206,7 @@ function format_person_list(current_person, small) {
 	html_string += '<li name="' + current_person.id + '">';
 
 	if(current_person.avatar != null)
-		html_string += '<a class="showdetails" href="javascript:;"><img src="/file?path=avatars/' + current_person.avatar + '" alt="' + current_person.firstname.substr(0, 20) + ' ' + current_person.surname.substr(0, 20) + '" /></a>';
+		html_string += '<a class="showdetails" href="javascript:;"><img src="/file?path=' + current_person.avatar + '" alt="' + current_person.firstname.substr(0, 20) + ' ' + current_person.surname.substr(0, 20) + '" /></a>';
 	html_string += '	<h3><a class="showdetails" href="javascript:;">' + current_person.firstname.substr(0, 20) + ' ' + current_person.surname.substr(0, 20) + '</a></h3>';
 	
 	//wenn wir alles anzeigen wollen
@@ -261,7 +261,7 @@ function format_interaction_list(current_person, small) {
 
 	if(current_person.avatar == undefined) current_person.avatar = "default.png";	   
 	   
-		html_string += '<a class="fancybox" href="/file?path=avatars/' + current_person.avatar + '"><img src="/file?path=avatars/' + current_person.avatar + '" alt="' + current_person.firstname.substr(0, 20) + ' ' + current_person.surname.substr(0, 20) + '" /></a>';
+		html_string += '<a class="fancybox" href="/file?path=' + current_person.avatar + '"><img src="/file?path=' + current_person.avatar + '" alt="' + current_person.firstname.substr(0, 20) + ' ' + current_person.surname.substr(0, 20) + '" /></a>';
 	html_string += '	<h3><a class="showdetails" href="javascript:;">' + current_person.firstname.substr(0, 20) + ' ' + current_person.surname.substr(0, 20) + '</a></h3>';
 	
 	//wenn wir alles anzeigen wollen
