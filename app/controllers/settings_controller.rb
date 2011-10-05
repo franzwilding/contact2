@@ -39,7 +39,7 @@ class SettingsController < ApplicationController
     @first_row = @sheet.row(0)
     
     @file = 'excel_import' + Time.now.to_i.to_s + '.xls'
-    File.open(Rails.root.join('tmp', 'uploads', @file), "wb") { |f| f.write(uploaded_io.read) }
+    File.open(Rails.root.join('tmp', @file), "wb") { |f| f.write(uploaded_io.read) }
     
   end
   
@@ -59,7 +59,7 @@ class SettingsController < ApplicationController
     
     #open the excel-file
     Spreadsheet.client_encoding = 'UTF-8'
-    book = Spreadsheet.open Rails.root.join('tmp', 'uploads', params[:file])
+    book = Spreadsheet.open Rails.root.join('tmp', params[:file])
     @sheet = book.worksheet 0
     
     #we iterate over all rows
