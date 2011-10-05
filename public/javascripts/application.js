@@ -259,9 +259,10 @@ function format_interaction_list(current_person, small) {
 	
 	html_string += '<li name="' + current_person.id + '">';
 
-	if(current_person.avatar == undefined) current_person.avatar = "default.png";	   
-	   
-		html_string += '<a class="fancybox" href="/file?path=' + current_person.avatar + '"><img src="/file?path=' + current_person.avatar + '" alt="' + current_person.firstname.substr(0, 20) + ' ' + current_person.surname.substr(0, 20) + '" /></a>';
+	if(current_person.avatar == undefined) current_person.avatar = "/private/images/avatars/default.png";	   
+  else current_person.avatar = "/file?path=" + current_person.avatar;
+  
+		html_string += '<a class="fancybox" href="' + current_person.avatar + '"><img src="' + current_person.avatar + '" alt="' + current_person.firstname.substr(0, 20) + ' ' + current_person.surname.substr(0, 20) + '" /></a>';
 	html_string += '	<h3><a class="showdetails" href="javascript:;">' + current_person.firstname.substr(0, 20) + ' ' + current_person.surname.substr(0, 20) + '</a></h3>';
 	
 	//wenn wir alles anzeigen wollen
