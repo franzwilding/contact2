@@ -48,7 +48,7 @@ class ListsController < ApplicationController
     @list = List.find(params[:id])
     
     @file = 'excel_export' + Time.now.to_i.to_s + '.xls'
-    @file = Rails.root.join('tmp', 'uploads', @file)
+    @file = Rails.root.join('tmp', @file)
 
     book = Spreadsheet::Workbook.new
     sheet = book.create_worksheet

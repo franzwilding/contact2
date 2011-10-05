@@ -80,7 +80,7 @@ class PeopleController < ApplicationController
     if !params[:person][:avatar].nil? && params[:person][:avatar] != ""
       uploaded_io = params[:person][:avatar]
       file = Time.now.to_i.to_s + uploaded_io.original_filename
-      File.open(Rails.root.join('private', 'images', 'avatars', file), "wb") { |f| f.write(uploaded_io.read) }
+      File.open(Rails.root.join('tmp', file), "wb") { |f| f.write(uploaded_io.read) }
       params[:person][:avatar] = file
     end
             
@@ -125,7 +125,7 @@ class PeopleController < ApplicationController
     if !params[:person][:avatar].nil? && params[:person][:avatar] != ""
       uploaded_io = params[:person][:avatar]
       file = Time.now.to_i.to_s + uploaded_io.original_filename
-      File.open(Rails.root.join('private', 'images', 'avatars', file), "wb") { |f| f.write(uploaded_io.read) }
+      File.open(Rails.root.join('tmp', file), "wb") { |f| f.write(uploaded_io.read) }
       params[:person][:avatar] = file
     end
         
