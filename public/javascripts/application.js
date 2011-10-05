@@ -259,7 +259,7 @@ function format_interaction_list(current_person, small) {
 	
 	html_string += '<li name="' + current_person.id + '">';
 
-	if(current_person.avatar == undefined) current_person.avatar = "/private/images/avatars/default.png";	   
+	if(current_person.avatar == undefined) current_person.avatar = "/default.png";	   
   else current_person.avatar = "/file?path=" + current_person.avatar;
   
 		html_string += '<a class="fancybox" href="' + current_person.avatar + '"><img src="' + current_person.avatar + '" alt="' + current_person.firstname.substr(0, 20) + ' ' + current_person.surname.substr(0, 20) + '" /></a>';
@@ -292,10 +292,10 @@ function format_interaction_list(current_person, small) {
 /****************************/
 function format_lists_list(current_list) {
 	
-	avatar = '/file?path=icons/dynamic.png';
+	avatar = '/dynamic.png';
 	
 	if(current_list.query == null)
-    avatar = '/file?path=icons/fixed.png';
+    avatar = '/fixed.png';
 	 
 	html_string = '';
 	
